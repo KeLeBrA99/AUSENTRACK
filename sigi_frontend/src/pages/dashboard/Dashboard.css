@@ -1,0 +1,73 @@
+/* AUSENTRACK - Estilos del dashboard */
+
+.dashboard-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.dashboard-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-left: 4px solid #1F3864;
+}
+
+.card-valor {
+    font-size: 32px;
+    font-weight: 800;
+    color: #1F3864;
+    line-height: 1;
+}
+
+.card-label {
+    font-size: 12px;
+    color: #888;
+    font-weight: 500;
+}
+
+.dashboard-fila {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    gap: 16px;
+    margin-bottom: 16px;
+}
+
+.dashboard-fila .mediana {
+    grid-column: auto;
+}
+
+.dashboard-fila:has(.mediana) {
+    grid-template-columns: 1fr 1fr;
+}
+
+.dashboard-grafica {
+    background: white;
+    border-radius: 8px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    margin-bottom: 16px;
+}
+
+.dashboard-grafica.grande  { grid-column: 1 / -1; }
+.dashboard-grafica.pequena { }
+.dashboard-grafica.mediana { }
+
+.grafica-titulo {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1F3864;
+    margin: 0 0 16px 0;
+}
+
+.sin-datos {
+    color: #aaa;
+    font-size: 13px;
+    text-align: center;
+    padding: 40px 0;
+}

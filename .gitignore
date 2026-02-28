@@ -1,0 +1,109 @@
+# ─── BACKEND DJANGO ───────────────────────────────────────────────────────────
+
+# Entorno virtual
+sigi_backend/venv/
+sigi_backend/.venv/
+sigi_backend/env/
+
+# Base de datos local
+sigi_backend/db.sqlite3
+
+# Archivos subidos por usuarios (documentos incapacidades)
+sigi_backend/media/
+
+# Cache de Python
+sigi_backend/**/__pycache__/
+sigi_backend/**/*.pyc
+sigi_backend/**/*.pyo
+sigi_backend/**/*.pyd
+sigi_backend/.Python
+
+# Archivos de migraciones compilados
+*.pyc
+
+# Variables de entorno
+sigi_backend/.env
+sigi_backend/.env.local
+sigi_backend/.env.production
+
+# Archivos de coleccion estatica
+sigi_backend/staticfiles/
+sigi_backend/static/
+
+# Logs
+sigi_backend/*.log
+sigi_backend/logs/
+
+
+# ─── FRONTEND REACT ───────────────────────────────────────────────────────────
+
+# Dependencias
+sigi_frontend/node_modules/
+
+# Build de produccion
+sigi_frontend/build/
+sigi_frontend/dist/
+
+# Variables de entorno
+sigi_frontend/.env
+sigi_frontend/.env.local
+sigi_frontend/.env.development.local
+sigi_frontend/.env.test.local
+sigi_frontend/.env.production.local
+
+# Logs de npm
+sigi_frontend/npm-debug.log*
+sigi_frontend/yarn-debug.log*
+sigi_frontend/yarn-error.log*
+
+
+# ─── EDITOR Y SISTEMA OPERATIVO ───────────────────────────────────────────────
+
+# VS Code
+.vscode/
+*.code-workspace
+
+# JetBrains (PyCharm, WebStorm)
+.idea/
+*.iml
+
+# Windows
+Thumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Linux
+*~
+
+
+# ─── ARCHIVOS TEMPORALES ──────────────────────────────────────────────────────
+
+*.tmp
+*.temp
+*.bak
+*.swp
+*.swo
+
+# Archivos de prueba generados
+test_output/
+coverage/
+.coverage
+htmlcov/
+# Backend
+sigi_backend/venv/
+sigi_backend/__pycache__/
+sigi_backend/*.pyc
+sigi_backend/db.sqlite3
+sigi_backend/media/
+
+# Frontend
+sigi_frontend/node_modules/
+sigi_frontend/build/
+
+# VS Code
+.vscode/

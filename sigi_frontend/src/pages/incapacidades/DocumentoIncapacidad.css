@@ -1,0 +1,132 @@
+/* AUSENTRACK - Estilos documento incapacidad */
+
+.documento-container {
+    border-top: 2px solid #f0f0f0;
+    padding-top: 18px;
+    margin-top: 18px;
+}
+
+.documento-titulo {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1F3864;
+    margin: 0 0 12px 0;
+}
+
+.documento-actual {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #f0f4f8;
+    border-radius: 8px;
+    padding: 12px 14px;
+    margin-bottom: 14px;
+}
+
+.documento-icono { font-size: 28px; }
+
+.documento-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1;
+}
+
+.documento-nombre {
+    font-size: 13px;
+    font-weight: 600;
+    color: #333;
+    word-break: break-all;
+}
+
+.documento-acciones { display: flex; gap: 8px; }
+
+.btn-ver-doc {
+    padding: 5px 12px;
+    background: #1F3864;
+    color: white;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background 0.2s;
+}
+.btn-ver-doc:hover { background: #2E75B6; }
+
+.btn-eliminar-doc {
+    padding: 5px 12px;
+    background: #fff;
+    color: #C0392B;
+    border: 1px solid #C0392B;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+.btn-eliminar-doc:hover { background: #C0392B; color: white; }
+
+.documento-vacio {
+    text-align: center;
+    padding: 16px;
+    color: #aaa;
+    font-size: 13px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    margin-bottom: 14px;
+}
+.documento-vacio span { font-size: 24px; display: block; margin-bottom: 4px; }
+
+.documento-upload-label {
+    font-size: 12px;
+    color: #666;
+    margin: 0 0 6px 0;
+    font-weight: 600;
+}
+
+.documento-upload-row { display: flex; gap: 8px; align-items: center; }
+
+.btn-seleccionar-doc {
+    flex: 1;
+    padding: 8px 12px;
+    border: 1px dashed #b0bec5;
+    border-radius: 5px;
+    font-size: 12px;
+    color: #555;
+    cursor: pointer;
+    background: white;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: border-color 0.2s;
+}
+.btn-seleccionar-doc:hover { border-color: #1F3864; color: #1F3864; }
+
+.btn-subir-doc {
+    padding: 8px 16px;
+    background: #1D6F42;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-subir-doc:disabled { background: #aaa; cursor: not-allowed; }
+.btn-subir-doc:hover:not(:disabled) { background: #155734; }
+
+.documento-hint {
+    font-size: 11px;
+    color: #aaa;
+    margin: 4px 0 0 0;
+}
+
+.alerta-exito {
+    background: #d4edda;
+    color: #155724;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+}

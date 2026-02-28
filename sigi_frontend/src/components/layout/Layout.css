@@ -1,0 +1,270 @@
+/* AUSENTRACK - Estilos del layout principal */
+
+.layout {
+    display: flex;
+    min-height: 100vh;
+}
+
+.sidebar {
+    width: 230px;
+    min-width: 230px;
+    background: #1F3864;
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    z-index: 100;
+}
+
+.sidebar-logo {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-titulo {
+    display: block;
+    font-size: 26px;
+    font-weight: 700;
+    color: white;
+    letter-spacing: 2px;
+}
+
+.sidebar-subtitulo {
+    display: block;
+    font-size: 10px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+    letter-spacing: 0.3px;
+}
+
+.sidebar-nav {
+    flex: 1;
+    padding: 16px 0;
+    overflow-y: auto;
+}
+
+.sidebar-link {
+    display: block;
+    padding: 11px 20px;
+    color: rgba(255,255,255,0.7);
+    font-size: 13px;
+    font-weight: 500;
+    text-decoration: none;
+    transition: background 0.15s, color 0.15s;
+    border-left: 3px solid transparent;
+}
+
+.sidebar-link:hover {
+    background: rgba(255,255,255,0.08);
+    color: white;
+}
+
+.sidebar-link-activo {
+    background: rgba(255,255,255,0.12);
+    color: white;
+    border-left-color: #5dade2;
+}
+
+.sidebar-footer {
+    padding: 16px 20px;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.sidebar-usuario {
+    margin-bottom: 10px;
+}
+
+.sidebar-nombre {
+    display: block;
+    font-size: 13px;
+    color: white;
+    font-weight: 600;
+}
+
+.sidebar-rol {
+    display: block;
+    font-size: 11px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 2px;
+}
+
+.sidebar-logout {
+    width: 100%;
+    padding: 8px;
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    border-radius: 5px;
+    color: rgba(255,255,255,0.8);
+    font-size: 12px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+
+.sidebar-logout:hover {
+    background: rgba(255,255,255,0.18);
+    color: white;
+}
+
+.layout-main {
+    margin-left: 230px;
+    flex: 1;
+    padding: 28px 32px;
+    background: #f0f4f8;
+    min-height: 100vh;
+}
+
+/* Cabecera de pagina */
+.pagina-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.pagina-titulo {
+    font-size: 20px;
+    font-weight: 700;
+    color: #1F3864;
+    margin: 0;
+}
+
+.pagina-subtitulo {
+    font-size: 13px;
+    color: #888;
+    margin: 4px 0 0 0;
+}
+
+/* Formularios generales */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+}
+
+.form-grid-full {
+    grid-column: 1 / -1;
+}
+
+.form-field {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.form-field label {
+    font-size: 12px;
+    font-weight: 600;
+    color: #444;
+}
+
+.form-field input,
+.form-field select {
+    padding: 9px 11px;
+    border: 1px solid #d0d7e2;
+    border-radius: 5px;
+    font-size: 13px;
+    background: #fafafa;
+    outline: none;
+    transition: border-color 0.2s;
+}
+
+.form-field input:focus,
+.form-field select:focus {
+    border-color: #1F3864;
+    background: white;
+}
+
+.form-acciones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Botones */
+.btn-primario {
+    background: #1F3864;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 9px 20px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-primario:hover:not(:disabled) { background: #2E5C8A; }
+.btn-primario:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.btn-secundario {
+    background: white;
+    color: #555;
+    border: 1px solid #d0d7e2;
+    border-radius: 5px;
+    padding: 9px 20px;
+    font-size: 13px;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+
+.btn-secundario:hover { background: #f5f5f5; }
+
+/* Filtros */
+.filtros {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+}
+
+.filtros input,
+.filtros select {
+    padding: 8px 12px;
+    border: 1px solid #d0d7e2;
+    border-radius: 5px;
+    font-size: 13px;
+    background: white;
+    outline: none;
+    min-width: 180px;
+}
+
+.filtros input:focus,
+.filtros select:focus {
+    border-color: #1F3864;
+}
+
+/* Alerta de error */
+.alerta-error {
+    background: #fdecea;
+    border: 1px solid #f5c6c2;
+    border-radius: 5px;
+    color: #b71c1c;
+    font-size: 13px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+}
+
+.alerta-exito {
+    background: #d4edda;
+    border: 1px solid #c3e6cb;
+    border-radius: 5px;
+    color: #155724;
+    font-size: 13px;
+    padding: 10px 14px;
+    margin-bottom: 16px;
+}
+
+.sidebar-perfil-link {
+    display: block;
+    text-align: center;
+    color: rgba(255,255,255,0.6);
+    font-size: 12px;
+    text-decoration: none;
+    padding: 6px 0;
+    margin-bottom: 4px;
+    transition: color 0.2s;
+}
+.sidebar-perfil-link:hover { color: white; }

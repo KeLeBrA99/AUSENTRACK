@@ -1,0 +1,93 @@
+/* AUSENTRACK - Estilos de perfil */
+
+.perfil-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr;
+    gap: 24px;
+    align-items: start;
+}
+
+.perfil-card {
+    background: white;
+    border-radius: 10px;
+    padding: 28px 20px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    text-align: center;
+}
+
+.perfil-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: #1F3864;
+    color: white;
+    font-size: 32px;
+    font-weight: 800;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px auto;
+}
+
+.perfil-info-items {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    text-align: left;
+    margin-top: 10px;
+}
+
+.perfil-info-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.perfil-info-item:last-child { border-bottom: none; }
+
+.perfil-info-label {
+    font-size: 11px;
+    color: #aaa;
+    text-transform: uppercase;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+}
+
+.perfil-info-valor {
+    font-size: 14px;
+    color: #333;
+    font-weight: 500;
+}
+
+.perfil-formularios {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.perfil-seccion {
+    background: white;
+    border-radius: 10px;
+    padding: 24px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+}
+
+.perfil-seccion-titulo {
+    font-size: 14px;
+    font-weight: 700;
+    color: #1F3864;
+    margin: 0 0 18px 0;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #f0f0f0;
+}
+
+.alerta-exito {
+    background: #d4edda;
+    color: #155724;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 12px;
+}

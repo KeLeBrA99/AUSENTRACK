@@ -1,0 +1,90 @@
+/* SIGI - Estilos de tabla */
+
+.tabla-wrapper {
+    width: 100%;
+    overflow-x: auto;
+    border-radius: 8px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.08);
+}
+
+.tabla {
+    width: 100%;
+    border-collapse: collapse;
+    background: white;
+    font-size: 13px;
+}
+
+.tabla thead tr {
+    background: #1F3864;
+    color: white;
+}
+
+.tabla th {
+    padding: 12px 14px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.4px;
+    white-space: nowrap;
+}
+
+.tabla td {
+    padding: 11px 14px;
+    border-bottom: 1px solid #f0f0f0;
+    color: #333;
+}
+
+.tabla tbody tr:hover {
+    background: #f5f9ff;
+}
+
+.tabla tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.tabla-vacia {
+    text-align: center;
+    color: #999;
+    padding: 32px !important;
+}
+
+.tabla-acciones {
+    white-space: nowrap;
+}
+
+.tabla-acciones button {
+    margin-right: 6px;
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-editar {
+    background: #EBF5FB;
+    color: #1F3864;
+}
+
+.btn-editar:hover { background: #d0e8f5; }
+
+.btn-eliminar {
+    background: #FDEDEC;
+    color: #922B21;
+}
+
+.btn-eliminar:hover { background: #f5c6c2; }
+
+.badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.badge-activo   { background: #d4edda; color: #155724; }
+.badge-inactivo { background: #f8d7da; color: #721c24; }
+.badge-eps      { background: #d1ecf1; color: #0c5460; }
+.badge-arl      { background: #fff3cd; color: #856404; }

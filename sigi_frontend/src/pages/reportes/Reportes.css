@@ -1,0 +1,121 @@
+/* AUSENTRACK - Estilos del modulo de reportes */
+
+.reporte-filtros {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 14px;
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    margin-bottom: 24px;
+}
+
+.reporte-btn-generar {
+    align-self: end;
+}
+
+.reporte-cards {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.reporte-card {
+    background: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    border-left: 4px solid #1F3864;
+}
+
+.reporte-resumen {
+    background: white;
+    border-radius: 8px;
+    padding: 18px 20px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+    margin-bottom: 20px;
+}
+
+.reporte-resumen-titulo {
+    font-size: 13px;
+    font-weight: 700;
+    color: #1F3864;
+    margin: 0 0 14px 0;
+}
+
+.reporte-resumen-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.resumen-item {
+    background: #f0f4f8;
+    border-radius: 6px;
+    padding: 8px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.resumen-tipo {
+    font-size: 12px;
+    font-weight: 600;
+    color: #1F3864;
+}
+
+.resumen-dato {
+    font-size: 11px;
+    color: #666;
+}
+
+.reporte-exportar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+
+.btn-exportar {
+    padding: 8px 18px;
+    border-radius: 5px;
+    border: none;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: opacity 0.2s;
+}
+
+.btn-exportar:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-excel {
+    background: #1D6F42;
+    color: white;
+}
+
+.btn-excel:hover:not(:disabled) { background: #185c38; }
+
+.btn-pdf {
+    background: #C0392B;
+    color: white;
+}
+
+.btn-pdf:hover:not(:disabled) { background: #a93226; }
+
+.reporte-vacio {
+    background: white;
+    border-radius: 8px;
+    padding: 40px;
+    text-align: center;
+    color: #888;
+    font-size: 13px;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.07);
+}

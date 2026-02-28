@@ -1,0 +1,129 @@
+/* AUSENTRACK - Estilos modal prorroga */
+
+.prorroga-info-original {
+    background: #f0f4f8;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.prorroga-info-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+    color: #555;
+}
+
+.prorroga-barra-container { margin-top: 6px; }
+
+.prorroga-barra-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #666;
+    margin-bottom: 6px;
+}
+
+.prorroga-barra {
+    height: 10px;
+    background: #dde3ea;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.prorroga-barra-fill {
+    height: 100%;
+    background: #1F3864;
+    border-radius: 5px;
+    transition: width 0.4s;
+}
+
+.prorroga-barra-fill.advertencia { background: #FFC000; }
+.prorroga-barra-fill.critico     { background: #C0392B; }
+
+.prorroga-tabs {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid #e8ecf0;
+    margin-bottom: 16px;
+}
+
+.prorroga-tab {
+    padding: 8px 20px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    font-size: 13px;
+    color: #888;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+}
+
+.prorroga-tab.activo {
+    color: #1F3864;
+    font-weight: 700;
+    border-bottom-color: #1F3864;
+}
+
+.prorroga-historial {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.prorroga-item {
+    border-radius: 8px;
+    padding: 12px 14px;
+    border-left: 4px solid #1F3864;
+    background: #f8fafc;
+}
+
+.prorroga-item.es-prorroga { border-left-color: #FFC000; }
+
+.prorroga-item-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.prorroga-item-dias {
+    font-weight: 700;
+    color: #1F3864;
+    font-size: 14px;
+}
+
+.prorroga-item-body {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    font-size: 12px;
+    color: #666;
+}
+
+.prorroga-diagnostico {
+    color: #888;
+    font-style: italic;
+}
+
+.prorroga-total {
+    padding: 12px;
+    background: #1F3864;
+    color: white;
+    border-radius: 8px;
+    font-size: 13px;
+    text-align: center;
+}
+
+.alerta-exito {
+    background: #d4edda;
+    color: #155724;
+    border-radius: 6px;
+    padding: 10px 14px;
+    font-size: 13px;
+    margin-bottom: 12px;
+}
