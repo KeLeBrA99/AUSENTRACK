@@ -107,12 +107,26 @@ sigi_frontend/build/
 
 # VS Code
 .vscode/
-# Datos personales reales - Ley 1581 de 2012
+# ── DATOS PERSONALES REALES (Ley 1581 de 2012 - Habeas Data) ──────────────
+# NUNCA subir a Git archivos con datos reales de colaboradores:
+# nombres, cedulas, salarios, diagnosticos medicos.
 seed_employees.json
 sigi_backend/seed_employees.json
 import_seed_data.py
 sigi_backend/import_seed_data.py
+
+# Respaldos de base de datos
 *.sql
+*.dump
+respaldo*
+backup*
+
+# Archivos de datos reales (Excel de colaboradores, procesos, nomina...)
 *.xlsx
+*.xls
 *.csv
+!**/plantilla*.xlsx
+!**/plantilla*.csv
+
+# Documentos cargados (incapacidades, contratos firmados...)
 sigi_backend/media/
