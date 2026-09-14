@@ -1,0 +1,83 @@
+/* AUSENTRACK - Estilos del modulo de incapacidades */
+
+.panel-alertas {
+    background: #fffbf0;
+    border: 1px solid #f0d080;
+    border-radius: 8px;
+    padding: 14px 18px;
+    margin-bottom: 20px;
+}
+
+.alertas-titulo {
+    font-weight: 700;
+    color: #7D6608;
+    font-size: 13px;
+    margin: 0 0 8px 0;
+}
+
+.alerta-item {
+    font-size: 12px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}
+
+.alerta-amarilla {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.alerta-roja {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Badges adicionales para incapacidades */
+.badge-cobro     { background: #cce5ff; color: #004085; }
+.badge-pagada    { background: #d4edda; color: #155724; }
+.badge-empleador { background: #e2e3e5; color: #383d41; }
+
+/* Boton de cambiar estado */
+.btn-estado {
+    padding: 4px 10px;
+    border-radius: 4px;
+    border: none;
+    font-size: 12px;
+    cursor: pointer;
+    font-weight: 500;
+    background: #fff3cd;
+    color: #856404;
+}
+
+.btn-estado:hover { background: #ffe69c; }
+
+.btn-editar, .btn-estado, .btn-prorroga, .btn-documento, .btn-eliminar {
+    padding: 4px 8px;
+    font-size: 11px;
+}
+
+.btn-prorroga {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    background: #FFC000;
+    color: #333;
+    transition: background 0.2s;
+}
+.btn-prorroga:hover { background: #e6ac00; }
+
+.btn-documento {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 600;
+    background: #4BACC6;
+    color: white;
+    transition: background 0.2s;
+}
+.btn-documento:hover { background: #2E75B6; }

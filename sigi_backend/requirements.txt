@@ -1,0 +1,16 @@
+Django==4.2.10
+djangorestframework==3.14.0
+djangorestframework-simplejwt==5.3.1
+django-cors-headers==4.3.1
+pymysql>=1.1.0
+python-decouple>=3.8
+python-dateutil>=2.9.0
+Pillow>=10.2.0
+openpyxl==3.1.2
+reportlab==4.1.0
+
+# Nota: se usa pymysql en vez de mysqlclient porque mysqlclient requiere
+# Visual C++ Build Tools para compilar en Windows. pymysql es puro Python
+# y no necesita compilador. Se activa en sigi_backend/__init__.py con:
+#   import pymysql
+#   pymysql.install_as_MySQLdb()

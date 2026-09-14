@@ -1,0 +1,46 @@
+/* AUSENTRACK - Formulario publico de autoevaluacion */
+
+.ep-page {
+    min-height: 100vh;
+    background: #F6F5F1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    padding: 40px 16px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.ep-card {
+    background: #fff;
+    border-radius: 14px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+    padding: 32px 28px;
+    max-width: 560px;
+    width: 100%;
+}
+
+.ep-titulo { font-size: 22px; font-weight: 700; color: #1A1A1A; margin: 0 0 4px; }
+.ep-sub { font-size: 13px; color: #6B6F76; margin: 0 0 20px; }
+.ep-error { font-size: 13px; color: #A83E3E; background: #F7E7E7; padding: 10px 14px; border-radius: 8px; margin-bottom: 16px; }
+
+.ep-criterios { margin-bottom: 20px; }
+.ep-criterio-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 12px 0; border-bottom: 1px solid #E1DED4; }
+.ep-criterio-row:last-child { border-bottom: none; }
+.ep-criterio-nombre { font-size: 14px; font-weight: 600; color: #1A1A1A; flex: 1; }
+.ep-star-group { display: flex; gap: 4px; }
+.ep-star { font-size: 26px; cursor: pointer; color: #D8D5CC; line-height: 1; user-select: none; }
+.ep-star.filled { color: #E9B949; }
+
+.ep-form-field { margin-bottom: 16px; }
+.ep-form-field label { display: block; font-size: 12.5px; font-weight: 600; color: #4B554E; margin-bottom: 6px; }
+.ep-form-field textarea {
+    width: 100%; font-size: 13.5px; padding: 10px 12px; border-radius: 8px; border: 1px solid #E1DED4;
+    background: #F6F5F1; font-family: inherit; min-height: 70px; box-sizing: border-box;
+}
+
+.ep-btn {
+    width: 100%; background: #4F8B5B; color: #fff; border: none; border-radius: 8px;
+    padding: 13px; font-size: 14.5px; font-weight: 600; cursor: pointer; margin-top: 8px;
+}
+.ep-btn:hover:not(:disabled) { background: #3D6D47; }
+.ep-btn:disabled { opacity: 0.6; cursor: default; }

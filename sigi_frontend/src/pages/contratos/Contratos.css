@@ -1,0 +1,70 @@
+/* AUSENTRACK - Contratos */
+
+.ct-page { padding: 4px 2px 40px; }
+
+.ct-header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
+.ct-titulo { font-size: 20px; font-weight: 700; color: #1A1A1A; margin: 0 0 4px; }
+.ct-subtitulo { font-size: 12.5px; color: #6b7280; margin: 0; }
+
+.ct-btn { font-size: 12.5px; font-weight: 600; padding: 9px 16px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; font-family: inherit; }
+.ct-btn-primary { background: #4F8B5B; color: #fff; }
+.ct-btn-primary:hover { background: #3D6D47; }
+.ct-btn-ghost { background: #fff; color: #4B554E; border: 1px solid #E1DED4; }
+.ct-btn-ghost:hover { color: #1B211D; }
+.ct-btn-ghost:disabled, .ct-btn-primary:disabled { opacity: 0.6; cursor: default; }
+.ct-btn-sm { font-size: 11.5px; padding: 5px 10px; border-radius: 6px; }
+.ct-btn-danger { background: #A83E3E; color: #fff; }
+
+.ct-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.ct-kpi { background: #fff; border: 1px solid #E1DED4; border-radius: 10px; padding: 14px 16px 12px; box-shadow: 0 1px 2px rgba(27,33,29,.04), 0 6px 16px rgba(27,33,29,.05); }
+.ct-kpi .num { font-size: 26px; font-weight: 700; line-height: 1; color: #1B211D; }
+.ct-kpi.warn .num { color: #B8752A; }
+.ct-kpi.danger .num { color: #A83E3E; }
+.ct-kpi .lbl { font-size: 11.5px; color: #6B6F76; margin-top: 6px; font-weight: 500; }
+
+.ct-panel { background: #fff; border: 1px solid #E1DED4; border-radius: 10px; padding: 16px 18px 18px; box-shadow: 0 1px 2px rgba(27,33,29,.04), 0 6px 16px rgba(27,33,29,.05); margin-bottom: 16px; }
+.ct-panel h2 { font-size: 14px; font-weight: 700; margin: 0 0 3px; color: #1B211D; }
+.ct-panel .ct-sub { font-size: 11.5px; color: #6B6F76; margin: 0 0 12px; }
+
+.ct-alert-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #E1DED4; }
+.ct-alert-item:last-child { border-bottom: none; }
+.ct-alert-item .who { font-size: 12.6px; font-weight: 600; }
+.ct-alert-item .where { font-size: 11.3px; color: #6B6F76; margin-top: 1px; }
+.ct-alert-tag { font-size: 11px; font-weight: 700; padding: 3px 9px; border-radius: 100px; white-space: nowrap; }
+.ct-alert-tag.critico { background: #F7E7E7; color: #A83E3E; }
+.ct-alert-tag.medio { background: #FBF0E1; color: #B8752A; }
+.ct-alert-empty { font-size: 12.5px; color: #6B6F76; padding: 6px 0; }
+
+.ct-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.ct-filters select, .ct-filters input[type=text] {
+    font-size: 12.5px; padding: 8px 10px; border-radius: 7px; border: 1px solid #E1DED4;
+    background: #fff; color: #1B211D; font-family: inherit;
+}
+.ct-filters input[type=text] { flex: 1; min-width: 200px; }
+
+.ct-badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 100px; font-size: 11.3px; font-weight: 600; white-space: nowrap; }
+.ct-badge.VIGENTE { background: #E7F1EC; color: #2F6F5E; }
+.ct-badge.VENCIDO { background: #F7E7E7; color: #A83E3E; }
+.ct-badge.TERMINADO { background: #EEEEF0; color: #6B6F76; }
+.ct-badge.RENOVADO { background: #E3ECFB; color: #2452A8; }
+
+.ct-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; margin-bottom: 12px; }
+.ct-form-grid .full { grid-column: 1 / -1; }
+.ct-form-field label { display: block; font-size: 10.3px; text-transform: uppercase; letter-spacing: .06em; color: #6B6F76; font-weight: 600; margin-bottom: 5px; }
+.ct-form-field input, .ct-form-field select, .ct-form-field textarea {
+    width: 100%; font-size: 13px; padding: 8px 10px; border-radius: 7px; border: 1px solid #E1DED4;
+    background: #F6F5F1; color: #1B211D; font-family: inherit; box-sizing: border-box;
+}
+.ct-form-field textarea { resize: vertical; min-height: 60px; }
+.ct-form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; }
+.ct-form-error { font-size: 12px; color: #A83E3E; margin: -4px 0 10px; }
+
+.ct-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; margin-bottom: 14px; }
+.ct-field .k { font-size: 10.3px; text-transform: uppercase; letter-spacing: .06em; color: #6B6F76; font-weight: 600; margin-bottom: 2px; }
+.ct-field .v { font-size: 13.3px; font-weight: 500; }
+.ct-detalle-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+
+@media (max-width: 900px) {
+    .ct-kpis { grid-template-columns: repeat(2, 1fr); }
+    .ct-form-grid, .ct-field-grid { grid-template-columns: 1fr; }
+}

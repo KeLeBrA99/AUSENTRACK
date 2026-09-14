@@ -1,0 +1,71 @@
+/* AUSENTRACK - Vacaciones */
+
+.vc-page { padding: 4px 2px 40px; }
+
+.vc-header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
+.vc-titulo { font-size: 20px; font-weight: 700; color: #1A1A1A; margin: 0 0 4px; }
+.vc-subtitulo { font-size: 12.5px; color: #6b7280; margin: 0; }
+
+.vc-btn { font-size: 12.5px; font-weight: 600; padding: 9px 16px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; font-family: inherit; }
+.vc-btn-primary { background: #2E75B6; color: #fff; }
+.vc-btn-primary:hover { background: #235A8C; }
+.vc-btn-ghost { background: #fff; color: #4B554E; border: 1px solid #E1DED4; }
+.vc-btn-ghost:hover { color: #1A1A1A; }
+.vc-btn-ghost:disabled, .vc-btn-primary:disabled { opacity: 0.6; cursor: default; }
+.vc-btn-sm { font-size: 11.5px; padding: 5px 10px; border-radius: 6px; }
+.vc-btn-success { background: #4F8B5B; color: #fff; }
+.vc-btn-danger { background: #A83E3E; color: #fff; }
+
+.vc-tabs { display: flex; gap: 6px; margin-bottom: 16px; border-bottom: 1px solid #E1DED4; }
+.vc-tab { padding: 9px 16px; font-size: 12.8px; font-weight: 600; color: #6B6F76; cursor: pointer; border-bottom: 2px solid transparent; }
+.vc-tab.activo { color: #2E75B6; border-bottom-color: #2E75B6; }
+
+.vc-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.vc-kpi { background: #fff; border: 1px solid #E1DED4; border-radius: 10px; padding: 14px 16px 12px; box-shadow: 0 1px 2px rgba(27,33,29,.04), 0 6px 16px rgba(27,33,29,.05); }
+.vc-kpi .num { font-size: 26px; font-weight: 700; line-height: 1; color: #1A1A1A; }
+.vc-kpi.warn .num { color: #B8752A; }
+.vc-kpi .lbl { font-size: 11.5px; color: #6B6F76; margin-top: 6px; font-weight: 500; }
+
+.vc-panel { background: #fff; border: 1px solid #E1DED4; border-radius: 10px; padding: 16px 18px 18px; box-shadow: 0 1px 2px rgba(27,33,29,.04), 0 6px 16px rgba(27,33,29,.05); margin-bottom: 16px; }
+.vc-panel h2 { font-size: 14px; font-weight: 700; margin: 0 0 3px; color: #1A1A1A; }
+.vc-panel .vc-sub { font-size: 11.5px; color: #6B6F76; margin: 0 0 12px; }
+
+.vc-alert-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #E1DED4; font-size: 12.6px; }
+.vc-alert-item:last-child { border-bottom: none; }
+
+.vc-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.vc-filters select, .vc-filters input[type=text] {
+    font-size: 12.5px; padding: 8px 10px; border-radius: 7px; border: 1px solid #E1DED4;
+    background: #fff; color: #1A1A1A; font-family: inherit;
+}
+.vc-filters input[type=text] { flex: 1; min-width: 200px; }
+
+.vc-badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 100px; font-size: 11.3px; font-weight: 600; white-space: nowrap; }
+.vc-badge.SOLICITADA { background: #FBF0E1; color: #B8752A; }
+.vc-badge.APROBADA { background: #E7F1EC; color: #2F6F5E; }
+.vc-badge.RECHAZADA { background: #F7E7E7; color: #A83E3E; }
+.vc-badge.DISFRUTADA { background: #E3ECFB; color: #2452A8; }
+.vc-badge.CANCELADA { background: #EEEEF0; color: #6B6F76; }
+
+.vc-saldo-barra-track { width: 100%; height: 8px; background: #F0EFEA; border-radius: 4px; overflow: hidden; margin-top: 4px; }
+.vc-saldo-barra-fill { height: 100%; border-radius: 4px; background: #2E75B6; }
+
+.vc-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; margin-bottom: 12px; }
+.vc-form-grid .full { grid-column: 1 / -1; }
+.vc-form-field label { display: block; font-size: 10.3px; text-transform: uppercase; letter-spacing: .06em; color: #6B6F76; font-weight: 600; margin-bottom: 5px; }
+.vc-form-field input, .vc-form-field textarea {
+    width: 100%; font-size: 13px; padding: 8px 10px; border-radius: 7px; border: 1px solid #E1DED4;
+    background: #F6F5F1; color: #1A1A1A; font-family: inherit; box-sizing: border-box;
+}
+.vc-form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; }
+.vc-form-error { font-size: 12px; color: #A83E3E; margin: -4px 0 10px; }
+
+.vc-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; margin-bottom: 14px; }
+.vc-field .k { font-size: 10.3px; text-transform: uppercase; letter-spacing: .06em; color: #6B6F76; font-weight: 600; margin-bottom: 2px; }
+.vc-field .v { font-size: 13.3px; font-weight: 500; }
+.vc-detalle-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 14px; }
+
+@media (max-width: 900px) {
+    .vc-kpis { grid-template-columns: repeat(2, 1fr); }
+    .vc-form-grid, .vc-field-grid { grid-template-columns: 1fr; }
+}

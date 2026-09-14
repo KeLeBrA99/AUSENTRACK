@@ -1,0 +1,63 @@
+/* AUSENTRACK - Retiros (offboarding) */
+
+.rt-page { padding: 4px 2px 40px; }
+
+.rt-header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 18px; flex-wrap: wrap; gap: 12px; }
+.rt-titulo { font-size: 20px; font-weight: 700; color: #1A1A1A; margin: 0 0 4px; }
+.rt-subtitulo { font-size: 12.5px; color: #6b7280; margin: 0; }
+
+.rt-btn { font-size: 12.5px; font-weight: 600; padding: 9px 16px; border-radius: 8px; border: 1px solid transparent; cursor: pointer; font-family: inherit; }
+.rt-btn-primary { background: #A83E3E; color: #fff; }
+.rt-btn-primary:hover { background: #8A3232; }
+.rt-btn-ghost { background: #fff; color: #4B554E; border: 1px solid #E1DED4; }
+.rt-btn-ghost:hover { color: #1A1A1A; }
+.rt-btn-ghost:disabled, .rt-btn-primary:disabled { opacity: 0.6; cursor: default; }
+.rt-btn-sm { font-size: 11.5px; padding: 5px 10px; border-radius: 6px; }
+
+.rt-kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+.rt-kpi { background: #fff; border: 1px solid #E1DED4; border-radius: 10px; padding: 14px 16px 12px; box-shadow: 0 1px 2px rgba(27,33,29,.04), 0 6px 16px rgba(27,33,29,.05); }
+.rt-kpi .num { font-size: 26px; font-weight: 700; line-height: 1; color: #1A1A1A; }
+.rt-kpi.warn .num { color: #B8752A; }
+.rt-kpi .lbl { font-size: 11.5px; color: #6B6F76; margin-top: 6px; font-weight: 500; }
+
+.rt-panel { background: #fff; border: 1px solid #E1DED4; border-radius: 10px; padding: 16px 18px 18px; box-shadow: 0 1px 2px rgba(27,33,29,.04), 0 6px 16px rgba(27,33,29,.05); margin-bottom: 16px; }
+.rt-panel h2 { font-size: 14px; font-weight: 700; margin: 0 0 3px; color: #1A1A1A; }
+.rt-panel .rt-sub { font-size: 11.5px; color: #6B6F76; margin: 0 0 12px; }
+
+.rt-alert-item { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 8px 0; border-bottom: 1px solid #E1DED4; font-size: 12.6px; }
+.rt-alert-item:last-child { border-bottom: none; }
+
+.rt-filters { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 12px; }
+.rt-filters select, .rt-filters input[type=text] {
+    font-size: 12.5px; padding: 8px 10px; border-radius: 7px; border: 1px solid #E1DED4;
+    background: #fff; color: #1A1A1A; font-family: inherit;
+}
+.rt-filters input[type=text] { flex: 1; min-width: 200px; }
+
+.rt-badge { display: inline-flex; align-items: center; padding: 3px 9px; border-radius: 100px; font-size: 11.3px; font-weight: 600; white-space: nowrap; }
+.rt-badge.PENDIENTE { background: #F7E7E7; color: #A83E3E; }
+.rt-badge.EN_PROCESO { background: #FBF0E1; color: #B8752A; }
+.rt-badge.PAGADA { background: #E7F1EC; color: #2F6F5E; }
+
+.rt-check-ok { color: #2F6F5E; font-weight: 700; }
+.rt-check-pend { color: #A83E3E; font-weight: 700; }
+
+.rt-form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 16px; margin-bottom: 12px; }
+.rt-form-grid .full { grid-column: 1 / -1; }
+.rt-form-field label { display: block; font-size: 10.3px; text-transform: uppercase; letter-spacing: .06em; color: #6B6F76; font-weight: 600; margin-bottom: 5px; }
+.rt-form-field input, .rt-form-field select, .rt-form-field textarea {
+    width: 100%; font-size: 13px; padding: 8px 10px; border-radius: 7px; border: 1px solid #E1DED4;
+    background: #F6F5F1; color: #1A1A1A; font-family: inherit; box-sizing: border-box;
+}
+.rt-checkbox-row { display: flex; align-items: center; gap: 8px; font-size: 13px; color: #1A1A1A; }
+.rt-form-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 6px; }
+.rt-form-error { font-size: 12px; color: #A83E3E; margin: -4px 0 10px; }
+
+.rt-field-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px 18px; margin-bottom: 14px; }
+.rt-field .k { font-size: 10.3px; text-transform: uppercase; letter-spacing: .06em; color: #6B6F76; font-weight: 600; margin-bottom: 2px; }
+.rt-field .v { font-size: 13.3px; font-weight: 500; }
+
+@media (max-width: 900px) {
+    .rt-kpis { grid-template-columns: repeat(2, 1fr); }
+    .rt-form-grid, .rt-field-grid { grid-template-columns: 1fr; }
+}
