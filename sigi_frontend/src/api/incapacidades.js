@@ -17,3 +17,5 @@ export const obtenerProrrogas    = (id)       => api.get(`/incapacidades/${id}/p
 
 export const subirDocumento   = (id, formData) => api.post(`/incapacidades/${id}/documento/`, formData, { headers: { 'Content-Type': 'multipart/form-data' } });
 export const eliminarDocumento = (id)           => api.delete(`/incapacidades/${id}/documento/`);
+// El documento se pide con la sesion del usuario (no es una URL publica) y llega como archivo binario.
+export const descargarDocumento = (id)          => api.get(`/incapacidades/${id}/documento/`, { responseType: 'blob' });

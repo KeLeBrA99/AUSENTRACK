@@ -87,6 +87,12 @@ Los documentos de incapacidades (`media/`) deben quedar en un volumen
 persistente, no dentro del contenedor o carpeta de la aplicación — si no, se
 pierden en cada despliegue.
 
+**No publiques la carpeta `media/` en nginx ni en ningún servidor web.** Esos
+documentos tienen datos de salud (dato sensible, Ley 1581 de 2012). El sistema
+los entrega solo a usuarios con sesión iniciada, por
+`/api/incapacidades/<id>/documento/`; una ruta `/media/` abierta permitiría
+verlos a cualquiera que tenga o adivine el enlace.
+
 ---
 
 ## 5. Verificación posterior
@@ -103,6 +109,8 @@ Y comprueba a mano:
 - [ ] El login funciona, y al fallar 10 veces seguidas responde 429
 - [ ] El link público de autoevaluación abre desde otra red
 - [ ] El webhook de JotForm llega (revisa el historial en JotForm)
+- [ ] Abrir `https://tu-dominio/media/` responde 404 (los documentos no son públicos)
+- [ ] "Ver documento" en una incapacidad abre el archivo estando con sesión iniciada
 
 ---
 

@@ -182,6 +182,21 @@ importando la plantilla de Excel que el propio módulo genera).
 
 ---
 
+## Pruebas automáticas
+
+```bash
+cd sigi_backend
+python manage.py test
+```
+
+Cubren lo más delicado del sistema: quién puede ver qué según su rol, que los
+documentos de incapacidades solo se entreguen con sesión iniciada, el conteo
+de días y el límite de 540 en las prórrogas, el responsable de pago, la alerta
+de 180 días acumulados y la administración de usuarios. Django crea y borra
+una base de datos temporal (`test_sigi_db`); la base real no se toca.
+
+---
+
 ## Despliegue a producción
 
 La configuración de seguridad (HTTPS forzado, HSTS, cookies seguras) **se

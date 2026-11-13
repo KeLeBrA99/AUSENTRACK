@@ -50,6 +50,9 @@
     font-weight: 600;
     text-decoration: none;
     transition: background 0.2s;
+    border: none;
+    cursor: pointer;
+    font-family: inherit;
 }
 .btn-ver-doc:hover { background: #2E75B6; }
 

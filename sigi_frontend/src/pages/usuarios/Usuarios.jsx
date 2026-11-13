@@ -7,6 +7,7 @@ import Layout from '../../components/layout/Layout';
 import Tabla from '../../components/ui/Tabla';
 import Modal from '../../components/ui/Modal';
 import { obtenerUsuarios, crearUsuario, actualizarUsuario, desactivarUsuario } from '../../api/usuarios';
+import { formatearErrorAPI } from '../../utils/errores';
 import '../../components/layout/Layout.css';
 
 const ROLES = [
@@ -78,9 +79,7 @@ export default function Usuarios() {
             setModal(false);
             cargar();
         } catch (err) {
-            const data = err.response?.data;
-            const msg  = data?.email?.[0] || data?.detail || 'Error al guardar el usuario.';
-            setError(msg);
+            setError(formatearErrorAPI(err, 'Error al guardar el usuario.'));
         } finally {
             setGuardando(false);
         }
@@ -91,8 +90,8 @@ export default function Usuarios() {
         try {
             await desactivarUsuario(id);
             cargar();
-        } catch {
-            alert('No se pudo desactivar el usuario.');
+        } catch (err) {
+            alert(formatearErrorAPI(err, 'No se pudo desactivar el usuario.'));
         }
     }
 

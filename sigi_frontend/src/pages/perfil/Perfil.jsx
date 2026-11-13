@@ -5,6 +5,7 @@
 import { useState, useEffect } from 'react';
 import Layout from '../../components/layout/Layout';
 import api from '../../api/axios';
+import { formatearErrorAPI } from '../../utils/errores';
 import '../../components/layout/Layout.css';
 import './Perfil.css';
 
@@ -32,8 +33,8 @@ export default function Perfil() {
         try {
             await api.patch('/auth/perfil/', { nombre: perfil.nombre });
             setMsgPerfil('Nombre actualizado correctamente.');
-        } catch {
-            setMsgPerfil('Error al actualizar el nombre.');
+        } catch (err) {
+            setMsgPerfil(formatearErrorAPI(err, 'Error al actualizar el nombre.'));
         }
     }
 
@@ -58,7 +59,7 @@ export default function Perfil() {
             setMsgPass('Contrasena cambiada correctamente.');
             setFormPass({ password_actual: '', password_nuevo: '', password_confirmar: '' });
         } catch (err) {
-            setErrorPass(err.response?.data?.detail || 'Error al cambiar la contrasena.');
+            setErrorPass(formatearErrorAPI(err, 'Error al cambiar la contrasena.'));
         } finally {
             setGuardando(false);
         }

@@ -2,6 +2,7 @@
 SIGI - Vistas de colaboradores
 """
 
+from django.db.models import Q
 from rest_framework import generics, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -236,7 +237,7 @@ class BuscarColaboradorView(APIView):
         colaboradores = Colaborador.objects.filter(
             activo=True
         ).filter(
-            models.Q(nombre__icontains=q) | models.Q(cedula__icontains=q)
+            Q(nombre__icontains=q) | Q(cedula__icontains=q)
         ).select_related('eps', 'arl')[:10]
 
         data = [
@@ -254,10 +255,6 @@ class BuscarColaboradorView(APIView):
             for c in colaboradores
         ]
         return Response(data)
-
-
-from django.db import models as django_models
-BuscarColaboradorView.get.__globals__['models'] = django_models
 
 
 class ImportarColaboradoresView(APIView):

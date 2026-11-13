@@ -10,9 +10,12 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.tokens import RefreshToken
 
 from .models import Usuario, Auditoria
+from rest_framework.exceptions import ValidationError
+
 from .serializers import (
     SIGITokenSerializer,
     UsuarioSerializer,
+    PerfilSerializer,
     CrearUsuarioSerializer,
     CambiarPasswordSerializer,
 )
@@ -89,13 +92,20 @@ class LogoutView(APIView):
 
 class PerfilView(APIView):
     """
-    GET /api/auth/perfil/
-    Retorna los datos del usuario autenticado.
+    GET   /api/auth/perfil/  Retorna los datos del usuario autenticado.
+    PATCH /api/auth/perfil/  Actualiza su nombre (el rol y el correo no se
+                             pueden cambiar desde aqui).
     """
     permission_classes = [IsAuthenticated]
 
     def get(self, request):
-        serializer = UsuarioSerializer(request.user)
+        return Response(PerfilSerializer(request.user).data)
+
+    def patch(self, request):
+        serializer = PerfilSerializer(request.user, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        registrar_auditoria(request.user, 'UPDATE', 'usuario', request.user.id_usuario, 'Actualizo su perfil', request)
         return Response(serializer.data)
 
 
@@ -149,11 +159,31 @@ class DetalleUsuarioView(generics.RetrieveUpdateDestroyAPIView):
     permission_classes  = [IsAuthenticated, EsAdmin]
     lookup_field        = 'id_usuario'
 
+    def _proteger_acceso(self, usuario, queda_activo, queda_rol):
+        """Evita que el sistema se quede sin nadie que pueda administrarlo."""
+        deja_de_ser_admin = usuario.rol == 'ADMIN' and usuario.activo and (not queda_activo or queda_rol != 'ADMIN')
+        if not deja_de_ser_admin:
+            return
+        if usuario.pk == self.request.user.pk:
+            raise ValidationError({'detail': 'No puedes desactivarte ni quitarte el rol de administrador a ti mismo.'})
+        otros_admin = Usuario.objects.filter(rol='ADMIN', activo=True).exclude(pk=usuario.pk).exists()
+        if not otros_admin:
+            raise ValidationError({'detail': 'Debe quedar al menos un administrador activo.'})
+
     def perform_update(self, serializer):
+        actual = serializer.instance
+        datos = serializer.validated_data
+        self._proteger_acceso(actual, datos.get('activo', actual.activo), datos.get('rol', actual.rol))
+        cambio_password = bool(datos.get('password'))
         usuario = serializer.save()
-        registrar_auditoria(self.request.user, 'UPDATE', 'usuario', usuario.id_usuario, request=self.request)
+        registrar_auditoria(
+            self.request.user, 'UPDATE', 'usuario', usuario.id_usuario,
+            detalle='Contrasena restablecida por un administrador' if cambio_password else None,
+            request=self.request,
+        )
 
     def perform_destroy(self, instance):
+        self._proteger_acceso(instance, queda_activo=False, queda_rol=instance.rol)
         registrar_auditoria(self.request.user, 'DELETE', 'usuario', instance.id_usuario, request=self.request)
         instance.activo = False
         instance.save()
