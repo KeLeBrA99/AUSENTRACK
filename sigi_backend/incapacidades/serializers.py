@@ -31,8 +31,12 @@ class IncapacidadSerializer(serializers.ModelSerializer):
             'documento_url', 'observaciones',
             'created_at', 'updated_at',
         ]
+        # documento_url es de SOLO LECTURA: lo fija el servidor al subir el
+        # archivo. Si se pudiera escribir, cualquiera con permiso de edicion
+        # podria apuntarlo a otro archivo del servidor y luego borrarlo con
+        # "Eliminar documento".
         read_only_fields = [
-            'id_incapacidad', 'dias', 'responsable_pago',
+            'id_incapacidad', 'dias', 'responsable_pago', 'documento_url',
             'usuario_registro', 'created_at', 'updated_at',
         ]
 
@@ -80,16 +84,37 @@ class IncapacidadListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = Incapacidad
+        # Incluye los campos que el frontend necesita para abrir "Editar" y
+        # "Documento" desde una fila del listado. Sin ellos el formulario de
+        # edicion arrancaba con diagnostico, observaciones, entidad y prorroga
+        # vacios y, al guardar, los borraba; y el documento adjunto nunca se
+        # mostraba.
         fields = [
             'id_incapacidad',
-            'colaborador_nombre', 'colaborador_cedula',
-            'entidad_emisora_nombre',
+            'colaborador', 'colaborador_nombre', 'colaborador_cedula',
+            'entidad_emisora', 'entidad_emisora_nombre',
+            'incapacidad_padre',
             'tipo', 'tipo_display',
             'fecha_inicio', 'fecha_fin', 'dias',
+            'diagnostico', 'observaciones',
             'responsable_pago', 'responsable_display',
             'estado', 'estado_display',
+            'documento_url',
             'created_at',
         ]
+
+
+class ProrrogaSerializer(serializers.Serializer):
+    """Datos para crear la prorroga de una incapacidad existente."""
+    fecha_inicio  = serializers.DateField()
+    fecha_fin     = serializers.DateField()
+    diagnostico   = serializers.CharField(required=False, allow_blank=True, allow_null=True, max_length=300)
+    observaciones = serializers.CharField(required=False, allow_blank=True, allow_null=True, default='')
+
+    def validate(self, data):
+        if data['fecha_fin'] < data['fecha_inicio']:
+            raise serializers.ValidationError('La fecha de fin no puede ser anterior a la fecha de inicio.')
+        return data
 
 
 class CambiarEstadoSerializer(serializers.Serializer):

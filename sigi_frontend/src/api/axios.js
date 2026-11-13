@@ -40,20 +40,37 @@ api.interceptors.response.use(
     async (error) => {
         const original = error.config;
 
-        if (error.response?.status === 401 && !original._retry) {
+        // Un 401 al iniciar sesion es "correo o contrasena incorrectos", no un
+        // token vencido: no se intenta renovar ni se recarga la pagina, para
+        // que el formulario pueda mostrar el mensaje de error.
+        const esLogin = original?.url?.includes('/auth/login/');
+
+        if (error.response?.status === 401 && original && !original._retry && !esLogin) {
             original._retry = true;
             try {
                 const refresh = localStorage.getItem('refresh_token');
+                if (!refresh) throw new Error('sin refresh token');
                 const response = await axios.post(`${API_BASE_URL}/auth/token/refresh/`, {
                     refresh,
                 });
                 const nuevoToken = response.data.access;
                 localStorage.setItem('access_token', nuevoToken);
+                // El servidor rota el refresh token en cada renovacion y anula
+                // el anterior: hay que guardar el nuevo, o la siguiente
+                // renovacion falla y la sesion se cierra sola.
+                if (response.data.refresh) {
+                    localStorage.setItem('refresh_token', response.data.refresh);
+                }
                 original.headers.Authorization = `Bearer ${nuevoToken}`;
                 return api(original);
             } catch {
                 localStorage.clear();
-                window.location.href = '/login';
+                // Las paginas publicas (login y el formulario de evaluacion que
+                // se abre por link, sin cuenta) no se redirigen.
+                const ruta = window.location.pathname;
+                if (ruta !== '/login' && !ruta.startsWith('/evaluar/')) {
+                    window.location.href = '/login';
+                }
             }
         }
 

@@ -124,6 +124,7 @@ REST_FRAMEWORK = {
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+    'EXCEPTION_HANDLER': 'sigi_backend.excepciones.manejador_de_errores',
 }
 
 # JWT
@@ -154,6 +155,20 @@ CORS_ALLOW_CREDENTIALS = True
 # Estas protecciones se activan SOLAS cuando DEBUG=False en el .env.
 # En desarrollo local quedan desactivadas para no estorbar.
 if not DEBUG:
+    # Con DEBUG=False el sistema se niega a arrancar con la configuracion de
+    # desarrollo: una SECRET_KEY publica permite falsificar sesiones, y
+    # ALLOWED_HOSTS='*' acepta peticiones dirigidas a cualquier dominio.
+    from django.core.exceptions import ImproperlyConfigured
+    if SECRET_KEY.startswith('django-insecure-'):
+        raise ImproperlyConfigured(
+            'Define una SECRET_KEY propia en el archivo .env antes de usar DEBUG=False '
+            '(ver GUIA_DESPLIEGUE.md).'
+        )
+    if '*' in ALLOWED_HOSTS:
+        raise ImproperlyConfigured(
+            'Define ALLOWED_HOSTS en el archivo .env con el dominio real antes de usar DEBUG=False.'
+        )
+
     # Obliga a que todo el trafico viaje cifrado (HTTPS)
     SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=True, cast=bool)
     SESSION_COOKIE_SECURE = True

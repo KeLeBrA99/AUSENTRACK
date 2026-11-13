@@ -3,10 +3,8 @@
  */
 
 import { useState } from 'react';
-import { subirDocumento, eliminarDocumento } from '../../api/incapacidades';
+import { subirDocumento, eliminarDocumento, descargarDocumento } from '../../api/incapacidades';
 import './DocumentoIncapacidad.css';
-
-const API_URL = 'http://127.0.0.1:8000/media/';
 
 export default function DocumentoIncapacidad({ incapacidad, onActualizado }) {
     const [archivo, setArchivo]     = useState(null);
@@ -14,9 +12,12 @@ export default function DocumentoIncapacidad({ incapacidad, onActualizado }) {
     const [error, setError]         = useState('');
     const [exito, setExito]         = useState('');
 
-    const tieneDocumento = !!incapacidad.documento_url;
-    const urlDocumento   = tieneDocumento ? `${API_URL}${incapacidad.documento_url}` : null;
-    const esPDF          = tieneDocumento && incapacidad.documento_url.toLowerCase().endsWith('.pdf');
+    // Se guarda en estado propio para reflejar de inmediato lo que se sube o
+    // se elimina, sin depender de que la pantalla de atras recargue la fila.
+    const [documentoUrl, setDocumentoUrl] = useState(incapacidad.documento_url || null);
+
+    const tieneDocumento = !!documentoUrl;
+    const esPDF          = tieneDocumento && documentoUrl.toLowerCase().endsWith('.pdf');
 
     function handleArchivo(e) {
         const f = e.target.files[0];
@@ -42,7 +43,8 @@ export default function DocumentoIncapacidad({ incapacidad, onActualizado }) {
         try {
             const formData = new FormData();
             formData.append('documento', archivo);
-            await subirDocumento(incapacidad.id_incapacidad, formData);
+            const res = await subirDocumento(incapacidad.id_incapacidad, formData);
+            setDocumentoUrl(res.data.documento_url);
             setExito('Documento subido correctamente.');
             setArchivo(null);
             onActualizado();
@@ -53,12 +55,31 @@ export default function DocumentoIncapacidad({ incapacidad, onActualizado }) {
         }
     }
 
+    async function handleVer() {
+        setError('');
+        // La pestaña se abre ANTES de pedir el archivo: si se abre despues de
+        // esperar la respuesta, el navegador la trata como ventana emergente
+        // y la bloquea.
+        const pestana = window.open('', '_blank');
+        try {
+            const res = await descargarDocumento(incapacidad.id_incapacidad);
+            const url = URL.createObjectURL(res.data);
+            if (pestana) pestana.location.href = url;
+            else window.location.assign(url);
+            setTimeout(() => URL.revokeObjectURL(url), 60 * 1000);
+        } catch {
+            if (pestana) pestana.close();
+            setError('No se pudo abrir el documento.');
+        }
+    }
+
     async function handleEliminar() {
         if (!window.confirm('Deseas eliminar el documento?')) return;
         setCargando(true);
         setError('');
         try {
             await eliminarDocumento(incapacidad.id_incapacidad);
+            setDocumentoUrl(null);
             setExito('Documento eliminado.');
             onActualizado();
         } catch {
@@ -80,12 +101,12 @@ export default function DocumentoIncapacidad({ incapacidad, onActualizado }) {
                     </div>
                     <div className="documento-info">
                         <span className="documento-nombre">
-                            {incapacidad.documento_url.split('/').pop()}
+                            {documentoUrl.split('/').pop()}
                         </span>
                         <div className="documento-acciones">
-                            <a href={urlDocumento} target="_blank" rel="noreferrer" className="btn-ver-doc">
+                            <button type="button" className="btn-ver-doc" onClick={handleVer}>
                                 Ver documento
-                            </a>
+                            </button>
                             <button className="btn-eliminar-doc" onClick={handleEliminar} disabled={cargando}>
                                 Eliminar
                             </button>

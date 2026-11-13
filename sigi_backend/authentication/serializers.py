@@ -2,6 +2,7 @@
 SIGI - Serializadores de authentication
 """
 
+from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import Usuario
@@ -33,10 +34,36 @@ class SIGITokenSerializer(TokenObtainPairSerializer):
 
 class UsuarioSerializer(serializers.ModelSerializer):
 
+    # Opcional al editar: si el administrador escribe una contrasena nueva,
+    # se cambia; si la deja vacia, se conserva la actual. Nunca se devuelve.
+    password = serializers.CharField(write_only=True, required=False, allow_blank=True, min_length=8)
+
+    class Meta:
+        model  = Usuario
+        fields = ['id_usuario', 'nombre', 'email', 'rol', 'activo', 'created_at', 'password']
+        read_only_fields = ['id_usuario', 'created_at']
+
+    def validate_password(self, value):
+        if value:
+            validate_password(value, self.instance)
+        return value
+
+    def update(self, instance, validated_data):
+        password = validated_data.pop('password', None)
+        instance = super().update(instance, validated_data)
+        if password:
+            instance.set_password(password)
+            instance.save(update_fields=['password'])
+        return instance
+
+
+class PerfilSerializer(serializers.ModelSerializer):
+    """Lo unico que un usuario puede cambiar de su propio perfil es el nombre."""
+
     class Meta:
         model  = Usuario
         fields = ['id_usuario', 'nombre', 'email', 'rol', 'activo', 'created_at']
-        read_only_fields = ['id_usuario', 'created_at']
+        read_only_fields = ['id_usuario', 'email', 'rol', 'activo', 'created_at']
 
 
 class CrearUsuarioSerializer(serializers.ModelSerializer):
@@ -46,6 +73,10 @@ class CrearUsuarioSerializer(serializers.ModelSerializer):
     class Meta:
         model  = Usuario
         fields = ['nombre', 'email', 'password', 'rol']
+
+    def validate_password(self, value):
+        validate_password(value)
+        return value
 
     def create(self, validated_data):
         password = validated_data.pop('password')
@@ -64,4 +95,8 @@ class CambiarPasswordSerializer(serializers.Serializer):
         user = self.context['request'].user
         if not user.check_password(value):
             raise serializers.ValidationError('La contrasena actual es incorrecta.')
+        return value
+
+    def validate_password_nuevo(self, value):
+        validate_password(value, self.context['request'].user)
         return value

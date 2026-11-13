@@ -63,12 +63,17 @@ class Incapacidad(models.Model):
         - Maternidad / paternidad: EPS
         - Enfermedad general dias 1-2: Empleador
         - Enfermedad general dia 3 en adelante: EPS
+        - Prorroga de enfermedad general: EPS. Los dos dias a cargo del
+          empleador ya se contaron en la incapacidad inicial; una prorroga de
+          1 o 2 dias es la continuacion del mismo caso, no un caso nuevo.
         """
         if self.tipo in ('ACCIDENTE_LABORAL', 'ENFERMEDAD_LABORAL'):
             return 'ARL'
         if self.tipo in ('MATERNIDAD', 'PATERNIDAD'):
             return 'EPS'
         if self.tipo == 'ENFERMEDAD_GENERAL':
+            if self.incapacidad_padre_id:
+                return 'EPS'
             return 'EMPLEADOR' if self.dias <= 2 else 'EPS'
         return 'EPS'
 

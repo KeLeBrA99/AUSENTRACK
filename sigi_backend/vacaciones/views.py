@@ -1,6 +1,7 @@
 """
 AUSENTRACK - Vistas de Vacaciones
 """
+import hmac
 import json
 import re
 from datetime import date, timedelta
@@ -403,7 +404,7 @@ class WebhookJotformVacacionesView(APIView):
 
         token_esperado = getattr(settings, 'JOTFORM_WEBHOOK_TOKEN', None)
         token_recibido = request.query_params.get('token')
-        if not token_esperado or token_recibido != token_esperado:
+        if not token_esperado or not hmac.compare_digest(str(token_recibido or ''), str(token_esperado)):
             return Response({'error': 'Token invalido o no configurado.'}, status=status.HTTP_403_FORBIDDEN)
 
         raw = request.data.get('rawRequest') or request.POST.get('rawRequest')

@@ -12,6 +12,8 @@ urlpatterns = [
     path('token/refresh/',      TokenRefreshView.as_view(),          name='token_refresh'),
     path('perfil/',             views.PerfilView.as_view(),          name='perfil'),
     path('cambiar-password/',   views.CambiarPasswordView.as_view(), name='cambiar_password'),
+    # Alias: es la ruta que llama la pantalla "Mi perfil" del frontend.
+    path('password/',           views.CambiarPasswordView.as_view(), name='cambiar_password_alias'),
     path('usuarios/',           views.ListarUsuariosView.as_view(),  name='listar_usuarios'),
     path('usuarios/crear/',     views.CrearUsuarioView.as_view(),    name='crear_usuario'),
     path('usuarios/<int:id_usuario>/', views.DetalleUsuarioView.as_view(), name='detalle_usuario'),
