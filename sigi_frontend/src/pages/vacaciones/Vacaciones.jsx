@@ -68,6 +68,8 @@ export default function Vacaciones() {
 
     const [detalle, setDetalle]         = useState(null);
     const [modalResp, setModalResp]     = useState(null); // 'aprobar' | 'rechazar'
+    const [errorResp, setErrorResp]     = useState('');
+    const [sinSaldo, setSinSaldo]       = useState(false);
     const [respForm, setRespForm]       = useState({ aprobado_por: '', motivo_rechazo: '' });
     const [guardandoResp, setGuardandoResp] = useState(false);
 
@@ -151,7 +153,9 @@ export default function Vacaciones() {
     // ---- Detalle y respuesta ----
     function abrirDetalle(s) { setDetalle(s); }
     function abrirResponder(tipo) {
-        setRespForm({ aprobado_por: '', motivo_rechazo: '' });
+        setRespForm({ aprobado_por: '', motivo_rechazo: '', autorizar_sin_saldo: false });
+        setErrorResp('');
+        setSinSaldo(false);
         setModalResp(tipo);
     }
     async function submitRespuesta() {
@@ -159,15 +163,21 @@ export default function Vacaciones() {
         setGuardandoResp(true);
         try {
             if (modalResp === 'aprobar') {
-                await aprobarSolicitud(detalle.id, { aprobado_por: respForm.aprobado_por });
+                await aprobarSolicitud(detalle.id, {
+                    aprobado_por: respForm.aprobado_por,
+                    autorizar_sin_saldo: respForm.autorizar_sin_saldo,
+                });
             } else {
                 await rechazarSolicitud(detalle.id, respForm);
             }
             setModalResp(null);
             setDetalle(null);
             await cargar();
-        } catch {
-            setError('No se pudo procesar la respuesta.');
+        } catch (err) {
+            // El servidor explica por que no se puede (sin saldo, estado que no
+            // lo permite): se muestra dentro del mismo cuadro.
+            setErrorResp(err.response?.data?.error || 'No se pudo procesar la respuesta.');
+            setSinSaldo(!!err.response?.data?.sin_saldo);
         } finally {
             setGuardandoResp(false);
         }
@@ -177,8 +187,8 @@ export default function Vacaciones() {
             await cancelarSolicitud(detalle.id);
             setDetalle(null);
             await cargar();
-        } catch {
-            setError('No se pudo cancelar la solicitud.');
+        } catch (err) {
+            setError(err.response?.data?.error || 'No se pudo cancelar la solicitud.');
         }
     }
     async function handleMarcarDisfrutada() {
@@ -186,8 +196,8 @@ export default function Vacaciones() {
             await marcarDisfrutada(detalle.id);
             setDetalle(null);
             await cargar();
-        } catch {
-            setError('No se pudo actualizar la solicitud.');
+        } catch (err) {
+            setError(err.response?.data?.error || 'No se pudo actualizar la solicitud.');
         }
     }
 
@@ -449,6 +459,17 @@ export default function Vacaciones() {
                             <div className="vc-form-field full"><label>Motivo del rechazo</label><textarea value={respForm.motivo_rechazo} onChange={e => setRespForm({ ...respForm, motivo_rechazo: e.target.value })} /></div>
                         )}
                     </div>
+                    {errorResp && <div className="alerta-error" style={{ marginTop: 12 }}>{errorResp}</div>}
+                    {modalResp === 'aprobar' && sinSaldo && (
+                        <label style={{ display: 'flex', alignItems: 'center', gap: 8, marginTop: 10, fontSize: 13 }}>
+                            <input
+                                type="checkbox"
+                                checked={respForm.autorizar_sin_saldo}
+                                onChange={e => setRespForm({ ...respForm, autorizar_sin_saldo: e.target.checked })}
+                            />
+                            Aprobar como vacaciones anticipadas (sin saldo suficiente)
+                        </label>
+                    )}
                     <div className="vc-form-actions">
                         <button className="vc-btn vc-btn-ghost" onClick={() => setModalResp(null)}>Cancelar</button>
                         <button className={modalResp === 'aprobar' ? 'vc-btn vc-btn-success' : 'vc-btn vc-btn-danger'} onClick={submitRespuesta} disabled={guardandoResp}>

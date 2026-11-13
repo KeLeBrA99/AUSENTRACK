@@ -45,6 +45,22 @@ su ficha de colaborador se genera sola heredando cargo y sede.
 
 ---
 
+## Capturas
+
+Tomadas con los datos de demostración (`python manage.py cargar_demo`): la empresa, las personas y los movimientos son ficticios.
+
+| | |
+|---|---|
+| **Dashboard** ![Dashboard](docs/capturas/dashboard.png) | **Incapacidades** ![Incapacidades](docs/capturas/incapacidades.png) |
+| **Colaboradores** ![Colaboradores](docs/capturas/colaboradores.png) | **Vacaciones** ![Vacaciones](docs/capturas/vacaciones.png) |
+| **Contratos** ![Contratos](docs/capturas/contratos.png) | **Reclutamiento** ![Reclutamiento](docs/capturas/reclutamiento.png) |
+| **Evaluaciones** ![Evaluaciones](docs/capturas/evaluaciones.png) | **Capacitaciones** ![Capacitaciones](docs/capturas/capacitaciones.png) |
+| **Puntos de venta** ![Puntos de venta](docs/capturas/puntos-venta.png) | **Procesos disciplinarios** ![Procesos](docs/capturas/procesos-disciplinarios.png) |
+| **Retiros** ![Retiros](docs/capturas/retiros.png) | **Dotación y EPP** ![Dotación](docs/capturas/dotacion.png) |
+| **Reportes** ![Reportes](docs/capturas/reportes.png) | **Auditoría** ![Auditoría](docs/capturas/auditoria.png) |
+
+---
+
 ## Tecnologías
 
 | Capa | Tecnología |
@@ -182,6 +198,34 @@ importando la plantilla de Excel que el propio módulo genera).
 
 ---
 
+## Datos de demostración
+
+Para ver el sistema con contenido sin usar información real:
+
+```bash
+# 1. En sigi_backend/.env apunta a una base aparte:   DB_NAME=ausentrack_demo
+# 2. En MySQL:   CREATE DATABASE ausentrack_demo CHARACTER SET utf8mb4;
+cd sigi_backend
+python manage.py migrate
+python manage.py cargar_demo
+```
+
+Carga una empresa ficticia con 8 puntos de venta, 60 colaboradores y movimientos en todos los módulos, además de tres usuarios (uno por rol) cuya clave se muestra al terminar. Todo es inventado.
+
+El comando **solo corre sobre una base vacía**: si ya hay colaboradores se detiene sin tocar nada, para no mezclar datos de prueba con información real. Al terminar la demostración, vuelve a poner en el `.env` el nombre de tu base de trabajo.
+
+---
+
+## Reglas configurables
+
+| Variable (`.env`) | Por defecto | Qué controla |
+|---|---|---|
+| `VACACIONES_SABADO_HABIL` | `True` | Si el sábado cuenta como día hábil al descontar vacaciones (una semana completa descuenta 6 días). Ponlo en `False` si la jornada es de lunes a viernes. Los domingos y los festivos de Colombia nunca cuentan; los festivos se calculan solos para cualquier año. |
+
+Los listados de la API aceptan `?page=` y `?page_size=` (máximo 200). Sin `page` devuelven la lista completa, como siempre.
+
+---
+
 ## Pruebas automáticas
 
 ```bash
@@ -192,7 +236,9 @@ python manage.py test
 Cubren lo más delicado del sistema: quién puede ver qué según su rol, que los
 documentos de incapacidades solo se entreguen con sesión iniciada, el conteo
 de días y el límite de 540 en las prórrogas, el responsable de pago, la alerta
-de 180 días acumulados y la administración de usuarios. Django crea y borra
+de 180 días acumulados, la administración de usuarios, los festivos y días
+hábiles, las reglas de aprobación de vacaciones, los filtros de auditoría y
+el comando de datos de demostración. Django crea y borra
 una base de datos temporal (`test_sigi_db`); la base real no se toca.
 
 ---

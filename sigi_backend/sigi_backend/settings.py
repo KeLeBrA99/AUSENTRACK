@@ -19,6 +19,13 @@ ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*', cast=Csv())
 # Token secreto que debe incluir JotForm al llamar al webhook publico de vacaciones
 JOTFORM_WEBHOOK_TOKEN = config('JOTFORM_WEBHOOK_TOKEN', default='')
 
+# Vacaciones: ¿el sabado cuenta como dia habil? Depende de la jornada de la
+# empresa. Por defecto SI, porque en la operacion el sabado es dia laboral
+# (una semana de vacaciones descuenta 6 dias). Pon False si la jornada es de
+# lunes a viernes. Domingos y festivos nunca cuentan: son descanso
+# obligatorio por ley aunque la empresa abra esos dias.
+VACACIONES_SABADO_HABIL = config('VACACIONES_SABADO_HABIL', default=True, cast=bool)
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -125,6 +132,7 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.IsAuthenticated',
     ),
     'EXCEPTION_HANDLER': 'sigi_backend.excepciones.manejador_de_errores',
+    'DEFAULT_PAGINATION_CLASS': 'sigi_backend.paginacion.PaginacionOpcional',
 }
 
 # JWT
