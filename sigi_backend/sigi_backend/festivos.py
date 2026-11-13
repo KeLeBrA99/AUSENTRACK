@@ -63,10 +63,11 @@ def es_festivo(fecha: date) -> bool:
 
 def es_dia_habil(fecha: date) -> bool:
     """
-    Lunes a viernes que no sean festivos. El sabado cuenta como habil solo si
-    la empresa lo trabaja (VACACIONES_SABADO_HABIL=True en el .env).
+    Lunes a sabado que no sean festivos. Si la jornada de la empresa es de
+    lunes a viernes, el sabado deja de contar (VACACIONES_SABADO_HABIL=False
+    en el .env). El domingo nunca es habil.
     """
-    ultimo_habil = 5 if getattr(settings, 'VACACIONES_SABADO_HABIL', False) else 4
+    ultimo_habil = 5 if getattr(settings, 'VACACIONES_SABADO_HABIL', True) else 4
     return fecha.weekday() <= ultimo_habil and not es_festivo(fecha)
 
 

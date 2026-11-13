@@ -14,6 +14,7 @@ from sigi_backend.festivos import contar_dias_habiles, domingo_de_pascua, festiv
 from .models import SolicitudVacaciones
 
 
+@override_settings(VACACIONES_SABADO_HABIL=False)
 class FestivosTests(SimpleTestCase):
 
     def test_festivos_de_2026(self):
@@ -42,9 +43,16 @@ class FestivosTests(SimpleTestCase):
 
     @override_settings(VACACIONES_SABADO_HABIL=True)
     def test_sabado_habil_si_la_empresa_lo_trabaja(self):
+        # lunes a domingo: 6 dias (el domingo nunca cuenta)
         self.assertEqual(contar_dias_habiles(date(2026, 3, 9), date(2026, 3, 15)), 6)
+        # quince dias habiles desde el lunes 9 de marzo terminan el jueves 26
+        # (el lunes 23 es festivo: San Jose trasladado)
+        self.assertEqual(contar_dias_habiles(date(2026, 3, 9), date(2026, 3, 26)), 15)
+        # un sabado festivo no cuenta: el 1 de mayo de 2027 cae en sabado
+        self.assertEqual(contar_dias_habiles(date(2027, 4, 26), date(2027, 5, 2)), 5)
 
 
+@override_settings(VACACIONES_SABADO_HABIL=False)
 class SolicitudesTests(APITestCase):
 
     def setUp(self):
@@ -89,6 +97,15 @@ class SolicitudesTests(APITestCase):
         self.assertEqual(s.estado, 'SOLICITADA')
         # autorizacion anticipada, de forma deliberada
         self.assertEqual(self.accion(s, 'aprobar', autorizar_sin_saldo=True).status_code, 200)
+
+    @override_settings(VACACIONES_SABADO_HABIL=True)
+    def test_con_sabado_laboral_una_semana_descuenta_seis_dias(self):
+        r = self.client.post('/api/vacaciones/crear/', {
+            'colaborador': self.colaborador.pk, 'tipo_solicitud': 'VACACIONES',
+            'fecha_inicio': '2026-03-09', 'fecha_fin': '2026-03-15',
+        }, format='json')
+        self.assertEqual(r.status_code, 201, r.data)
+        self.assertEqual(r.data['dias_habiles'], 6)
 
     def test_un_permiso_no_depende_del_saldo(self):
         s = self.solicitud(colaborador=self.nuevo, tipo_solicitud='PERMISO_NO_REMUNERADO')

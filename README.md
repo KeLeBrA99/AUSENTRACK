@@ -220,7 +220,7 @@ El comando **solo corre sobre una base vacía**: si ya hay colaboradores se deti
 
 | Variable (`.env`) | Por defecto | Qué controla |
 |---|---|---|
-| `VACACIONES_SABADO_HABIL` | `False` | Si el sábado cuenta como día hábil al descontar vacaciones. Los festivos de Colombia nunca cuentan; se calculan solos para cualquier año. |
+| `VACACIONES_SABADO_HABIL` | `True` | Si el sábado cuenta como día hábil al descontar vacaciones (una semana completa descuenta 6 días). Ponlo en `False` si la jornada es de lunes a viernes. Los domingos y los festivos de Colombia nunca cuentan; los festivos se calculan solos para cualquier año. |
 
 Los listados de la API aceptan `?page=` y `?page_size=` (máximo 200). Sin `page` devuelven la lista completa, como siempre.
 
