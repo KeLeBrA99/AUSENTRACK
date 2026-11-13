@@ -18,20 +18,14 @@ from authentication.views import registrar_auditoria
 from .models import SolicitudVacaciones
 from .serializers import SolicitudVacacionesSerializer, ResponderSolicitudSerializer
 
+from sigi_backend.festivos import contar_dias_habiles
+
 DIAS_POR_MES = 15 / 12  # 15 dias habiles de ley por cada año completo trabajado
 
 
 def _contar_dias_habiles(inicio, fin):
-    """Dias de lunes a viernes entre dos fechas (ambas incluidas)."""
-    if not inicio or not fin or fin < inicio:
-        return 0
-    dias = 0
-    actual = inicio
-    while actual <= fin:
-        if actual.weekday() < 5:
-            dias += 1
-        actual += timedelta(days=1)
-    return dias
+    """Dias habiles entre dos fechas (ambas incluidas): sin fines de semana ni festivos."""
+    return contar_dias_habiles(inicio, fin)
 
 
 def _dias_causados(colaborador, hasta=None):
@@ -184,6 +178,19 @@ class DetalleSolicitudView(generics.RetrieveUpdateDestroyAPIView):
 
 # ── APROBAR / RECHAZAR / CANCELAR ────────────────────────────────────────────
 
+def _exigir_estado(solicitud, permitidos, accion):
+    """
+    Evita saltos que descuadran el saldo: por ejemplo marcar como disfrutada
+    una solicitud rechazada (descontaria dias que nunca se aprobaron).
+    Devuelve una respuesta 400 si el estado actual no permite la accion.
+    """
+    if solicitud.estado in permitidos:
+        return None
+    return Response({
+        'error': f'No se puede {accion} una solicitud en estado {solicitud.get_estado_display()}.'
+    }, status=400)
+
+
 class AprobarSolicitudView(APIView):
     permission_classes = [IsAuthenticated, EsTalentoHumano]
 
@@ -191,6 +198,25 @@ class AprobarSolicitudView(APIView):
         solicitud = generics.get_object_or_404(SolicitudVacaciones, pk=pk)
         serializer = ResponderSolicitudSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
+
+        error = _exigir_estado(solicitud, ['SOLICITADA'], 'aprobar')
+        if error:
+            return error
+
+        # El saldo se valida aqui y no solo al crear: las solicitudes que
+        # llegan por el formulario web (JotForm) entran sin validar saldo, y
+        # entre la solicitud y la aprobacion pueden haberse aprobado otras.
+        if solicitud.tipo_solicitud == 'VACACIONES' and not serializer.validated_data['autorizar_sin_saldo']:
+            saldo = _calcular_saldo(solicitud.colaborador)['saldo_disponible']
+            if solicitud.dias_habiles > saldo:
+                return Response({
+                    'error': (
+                        f'{solicitud.colaborador.nombre} tiene {saldo} dia(s) de vacaciones disponibles y la '
+                        f'solicitud es de {solicitud.dias_habiles}. Si es una autorizacion anticipada, marca '
+                        f'la opcion para aprobarla sin saldo.'
+                    ),
+                    'sin_saldo': True,
+                }, status=400)
 
         solicitud.estado = 'APROBADA'
         solicitud.aprobado_por = serializer.validated_data['aprobado_por']
@@ -212,6 +238,10 @@ class RechazarSolicitudView(APIView):
         serializer = ResponderSolicitudSerializer(data=request.data)
         serializer.is_valid(raise_exception=True)
 
+        error = _exigir_estado(solicitud, ['SOLICITADA'], 'rechazar')
+        if error:
+            return error
+
         solicitud.estado = 'RECHAZADA'
         solicitud.aprobado_por = serializer.validated_data['aprobado_por']
         solicitud.motivo_rechazo = serializer.validated_data.get('motivo_rechazo', '')
@@ -230,6 +260,9 @@ class CancelarSolicitudView(APIView):
 
     def post(self, request, pk):
         solicitud = generics.get_object_or_404(SolicitudVacaciones, pk=pk)
+        error = _exigir_estado(solicitud, ['SOLICITADA', 'APROBADA'], 'cancelar')
+        if error:
+            return error
         solicitud.estado = 'CANCELADA'
         solicitud.save(update_fields=['estado'])
         registrar_auditoria(
@@ -245,6 +278,9 @@ class MarcarDisfrutadaView(APIView):
 
     def post(self, request, pk):
         solicitud = generics.get_object_or_404(SolicitudVacaciones, pk=pk)
+        error = _exigir_estado(solicitud, ['APROBADA'], 'marcar como disfrutada')
+        if error:
+            return error
         solicitud.estado = 'DISFRUTADA'
         solicitud.save(update_fields=['estado'])
         registrar_auditoria(

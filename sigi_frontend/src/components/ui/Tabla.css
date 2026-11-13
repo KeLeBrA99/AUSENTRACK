@@ -88,3 +88,48 @@
 .badge-inactivo { background: #f8d7da; color: #721c24; }
 .badge-eps      { background: #d1ecf1; color: #0c5460; }
 .badge-arl      { background: #fff3cd; color: #856404; }
+
+/* Controles de paginacion */
+.tabla-paginacion {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+    font-size: 13px;
+    color: #666;
+}
+
+.tabla-paginacion-botones {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.tabla-paginacion-botones button {
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 13px;
+    font-family: inherit;
+    color: #333;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s;
+}
+
+.tabla-paginacion-botones button:hover:not(:disabled) {
+    background: #f5f9ff;
+    border-color: #1A1A1A;
+}
+
+.tabla-paginacion-botones button:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.tabla-paginacion-actual {
+    padding: 0 8px;
+    white-space: nowrap;
+}

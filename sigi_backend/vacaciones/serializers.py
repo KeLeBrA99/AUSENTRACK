@@ -88,3 +88,5 @@ class SolicitudVacacionesSerializer(serializers.ModelSerializer):
 class ResponderSolicitudSerializer(serializers.Serializer):
     aprobado_por   = serializers.CharField(max_length=150)
     motivo_rechazo = serializers.CharField(required=False, allow_blank=True, default='')
+    # Solo aplica al aprobar: permite aprobar vacaciones anticipadas.
+    autorizar_sin_saldo = serializers.BooleanField(required=False, default=False)

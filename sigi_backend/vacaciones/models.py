@@ -8,7 +8,8 @@ contador aparte) a partir de su fecha de ingreso y de sus solicitudes ya
 aprobadas o disfrutadas.
 """
 from django.db import models
-from datetime import timedelta
+
+from sigi_backend.festivos import contar_dias_habiles
 
 
 class SolicitudVacaciones(models.Model):
@@ -61,16 +62,13 @@ class SolicitudVacaciones(models.Model):
         return f'{self.colaborador.nombre} - {self.fecha_inicio} a {self.fecha_fin} ({self.get_estado_display()})'
 
     def save(self, *args, **kwargs):
-        if self.fecha_inicio and self.fecha_fin and not self.dias_habiles:
+        # Se recalcula siempre que se guarda el registro completo: antes solo
+        # se calculaba la primera vez, y al corregir las fechas de una
+        # solicitud quedaba el numero de dias viejo (y el saldo, descuadrado).
+        if self.fecha_inicio and self.fecha_fin:
             self.dias_habiles = self._calcular_dias_habiles()
         super().save(*args, **kwargs)
 
     def _calcular_dias_habiles(self):
-        """Cuenta los dias de lunes a viernes entre fecha_inicio y fecha_fin (ambas incluidas)."""
-        dias = 0
-        actual = self.fecha_inicio
-        while actual <= self.fecha_fin:
-            if actual.weekday() < 5:  # 0=lunes ... 4=viernes
-                dias += 1
-            actual += timedelta(days=1)
-        return dias
+        """Dias habiles entre fecha_inicio y fecha_fin (ambas incluidas), sin festivos."""
+        return contar_dias_habiles(self.fecha_inicio, self.fecha_fin)

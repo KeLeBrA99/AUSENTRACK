@@ -189,18 +189,36 @@ class DetalleUsuarioView(generics.RetrieveUpdateDestroyAPIView):
         instance.save()
 
 
-class ListarAuditoriaView(generics.ListAPIView):
+class ListarAuditoriaView(APIView):
     """
     GET /api/auth/auditoria/
-    Lista el log de auditoria. Solo accesible por ADMIN.
+    Log de auditoria, del mas reciente al mas antiguo. Solo ADMIN.
+
+    Filtros: ?accion=&tabla=&usuario=&fecha_desde=AAAA-MM-DD&fecha_hasta=AAAA-MM-DD
+    Con ?page= responde paginado ({count, next, previous, results}); sin ese
+    parametro devuelve los 500 mas recientes que cumplan los filtros.
     """
     permission_classes = [IsAuthenticated, EsAdmin]
 
     def get(self, request):
         from .models import Auditoria
-        registros = Auditoria.objects.select_related('usuario').order_by('-fecha')[:500]
-        data = [
-            {
+        from sigi_backend.paginacion import PaginacionOpcional
+
+        p = request.query_params
+        registros = Auditoria.objects.select_related('usuario').order_by('-fecha', '-id_auditoria')
+        if p.get('accion'):
+            registros = registros.filter(accion=p['accion'])
+        if p.get('tabla'):
+            registros = registros.filter(tabla_afectada__icontains=p['tabla'])
+        if p.get('usuario'):
+            registros = registros.filter(usuario__nombre__icontains=p['usuario'])
+        if p.get('fecha_desde'):
+            registros = registros.filter(fecha__date__gte=p['fecha_desde'])
+        if p.get('fecha_hasta'):
+            registros = registros.filter(fecha__date__lte=p['fecha_hasta'])
+
+        def fila(r):
+            return {
                 'id':            r.id_auditoria,
                 'usuario':       r.usuario.nombre,
                 'accion':        r.accion,
@@ -210,6 +228,9 @@ class ListarAuditoriaView(generics.ListAPIView):
                 'ip':            r.ip_origen,
                 'fecha':         r.fecha,
             }
-            for r in registros
-        ]
-        return Response(data)
+
+        paginador = PaginacionOpcional()
+        pagina = paginador.paginate_queryset(registros, request, view=self)
+        if pagina is not None:
+            return paginador.get_paginated_response([fila(r) for r in pagina])
+        return Response([fila(r) for r in registros[:500]])

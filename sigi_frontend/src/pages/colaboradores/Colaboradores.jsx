@@ -262,9 +262,13 @@ export default function Colaboradores() {
                 <p style={{ color: '#888', fontSize: 13 }}>Cargando...</p>
             ) : (
                 <>
+                {/* Este listado ya llega paginado desde el servidor (50 por pagina,
+                    con sus controles abajo): se pide a la tabla el mismo tamaño
+                    para que no reparta otra vez esas 50 filas. */}
                 <Tabla
                     columnas={columnas}
                     datos={colaboradores}
+                    porPagina={50}
                     acciones={(fila) => (
                         <>
                             <button className="btn-editar" onClick={() => abrirEditar(fila)}>Editar</button>

@@ -122,3 +122,38 @@ class AccesoPorRolTests(BaseUsuarios):
         self.client.force_authenticate(self.th)
         for url in self.SOLO_TALENTO_HUMANO + self.TAMBIEN_NOMINA:
             self.assertEqual(self.client.get(url).status_code, 200, url)
+
+
+class AuditoriaTests(BaseUsuarios):
+
+    def setUp(self):
+        super().setUp()
+        from .models import Auditoria
+        for i in range(60):
+            Auditoria.objects.create(usuario=self.admin, accion='UPDATE', tabla_afectada='colaborador', id_registro=i)
+        for i in range(5):
+            Auditoria.objects.create(usuario=self.th, accion='CREATE', tabla_afectada='incapacidad', id_registro=i)
+        self.client.force_authenticate(self.admin)
+
+    def test_los_filtros_funcionan(self):
+        """Antes la pantalla enviaba los filtros y el servidor los ignoraba."""
+        self.assertEqual(len(self.client.get('/api/auth/auditoria/').data), 65)
+        self.assertEqual(len(self.client.get('/api/auth/auditoria/?accion=CREATE').data), 5)
+        self.assertEqual(len(self.client.get('/api/auth/auditoria/?tabla=incapa').data), 5)
+        self.assertEqual(len(self.client.get('/api/auth/auditoria/?usuario=talento').data), 5)
+        self.assertEqual(len(self.client.get('/api/auth/auditoria/?fecha_desde=2099-01-01').data), 0)
+        self.assertEqual(self.client.get('/api/auth/auditoria/?fecha_desde=ayer').status_code, 400)
+
+    def test_paginacion(self):
+        r = self.client.get('/api/auth/auditoria/?page=1&page_size=25')
+        self.assertEqual((r.data['count'], len(r.data['results'])), (65, 25))
+        self.assertIsNotNone(r.data['next'])
+        r = self.client.get('/api/auth/auditoria/?page=3&page_size=25')
+        self.assertEqual(len(r.data['results']), 15)
+        self.assertIsNone(r.data['next'])
+        self.assertEqual(self.client.get('/api/auth/auditoria/?page=99').status_code, 404)
+
+    def test_los_demas_listados_se_paginan_solo_si_se_pide(self):
+        self.assertIsInstance(self.client.get('/api/auth/usuarios/').data, list)        # igual que siempre
+        r = self.client.get('/api/auth/usuarios/?page=1&page_size=2')
+        self.assertEqual((r.data['count'], len(r.data['results'])), (3, 2))
