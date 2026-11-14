@@ -12,7 +12,7 @@ import Modal from '../../components/ui/Modal';
 import { formatearErrorAPI } from '../../utils/errores';
 import api from '../../api/axios';
 import {
-    obtenerEvaluaciones, crearEvaluacion, actualizarEvaluacion,
+    obtenerEvaluaciones, obtenerEvaluacion, crearEvaluacion, actualizarEvaluacion,
     obtenerCriteriosEstandar, obtenerEstadisticasEvaluaciones, crearInvitacionEvaluacion,
 } from '../../api/evaluaciones';
 import '../../components/layout/Layout.css';
@@ -238,7 +238,18 @@ export default function Evaluaciones() {
     }
 
     // ---- Detalle / edición ----
-    function abrirDetalle(ev) { setDetalle(ev); setEditando(false); }
+    // La fila del listado es una version liviana (sin criterios, evaluador ni
+    // observaciones): el detalle completo se pide al servidor al abrirlo.
+    async function abrirDetalle(ev) {
+        setError('');
+        try {
+            const res = await obtenerEvaluacion(ev.id);
+            setDetalle(res.data);
+            setEditando(false);
+        } catch {
+            setError('No se pudo abrir la evaluación.');
+        }
+    }
     function iniciarEdicion() {
         setEditForm({
             criterios: detalle.criterios.map(c => ({ ...c })),
