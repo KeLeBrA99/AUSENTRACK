@@ -5,6 +5,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import pokeLogo from '../../assets/poke-logo.png';
+import { useDemo } from '../../utils/demo';
 import './Layout.css';
 
 const menuItems = [
@@ -29,6 +30,7 @@ const menuItems = [
 export default function Layout({ children }) {
     const { usuario, logout } = useAuth();
     const navigate = useNavigate();
+    const demo = useDemo();
 
     async function handleLogout() {
         try {
@@ -47,7 +49,7 @@ export default function Layout({ children }) {
         <div className="layout">
             <aside className="sidebar">
                 <div className="sidebar-logo">
-                    <img src={pokeLogo} alt="Poke" className="sidebar-logo-img" />
+                    {!demo.demo && <img src={pokeLogo} alt="Poke" className="sidebar-logo-img" />}
                     <span className="sidebar-titulo">AUSENTRACK</span>
                     <span className="sidebar-subtitulo">Gestión de Talento Humano</span>
                 </div>
@@ -85,6 +87,12 @@ export default function Layout({ children }) {
             </aside>
 
             <main className="layout-main">
+                {demo.demo && (
+                    <div className="demo-aviso">
+                        Demostración con datos ficticios. Algunas acciones (usuarios, contraseñas, subir archivos)
+                        están desactivadas y los datos se reinician solos.
+                    </div>
+                )}
                 {children}
             </main>
         </div>

@@ -7,6 +7,7 @@ sigi_backend/env/
 
 # Base de datos local
 sigi_backend/db.sqlite3
+sigi_backend/*.sqlite3
 
 # Archivos subidos por usuarios (documentos incapacidades)
 sigi_backend/media/
@@ -99,6 +100,7 @@ sigi_backend/venv/
 sigi_backend/__pycache__/
 sigi_backend/*.pyc
 sigi_backend/db.sqlite3
+sigi_backend/*.sqlite3
 sigi_backend/media/
 
 # Frontend

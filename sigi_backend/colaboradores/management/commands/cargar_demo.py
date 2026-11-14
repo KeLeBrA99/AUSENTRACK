@@ -23,8 +23,10 @@ import random
 from datetime import date, timedelta
 from decimal import Decimal
 
+from django.conf import settings
+from django.core.management import call_command
 from django.core.management.base import BaseCommand, CommandError
-from django.db import transaction
+from django.db import connection, transaction
 
 from authentication.models import Auditoria, Usuario
 from capacitaciones.models import Capacitacion, ParticipanteCapacitacion
@@ -43,6 +45,11 @@ from sigi_backend.festivos import es_dia_habil
 from vacaciones.models import SolicitudVacaciones
 
 CLAVE_DEMO = 'Demo-Ausentrack-2026'
+USUARIOS_DEMO = [
+    ('ADMIN', 'admin@demo.co', 'Administrador Demo'),
+    ('TALENTO_HUMANO', 'talento@demo.co', 'Laura Demo'),
+    ('NOMINA', 'nomina@demo.co', 'Nómina Demo'),
+]
 RESPONSABLE = 'Laura Demo (Talento Humano)'
 
 NOMBRES = ['Andrés', 'Camila', 'Santiago', 'Valentina', 'Juan', 'Daniela', 'Carlos', 'Mariana', 'Felipe', 'Laura',
@@ -69,7 +76,23 @@ DIAGNOSTICOS = ['J06.9 Infección respiratoria aguda', 'A09 Gastroenteritis', 'M
 class Command(BaseCommand):
     help = 'Carga datos ficticios de demostracion en una base vacia.'
 
+    def add_arguments(self, parser):
+        parser.add_argument(
+            '--reiniciar', action='store_true',
+            help='Borra TODO y recarga la demo. Solo funciona en modo demostracion (DEMO_MODE=True con SQLite).',
+        )
+
     def handle(self, *args, **opciones):
+        if opciones['reiniciar']:
+            # Doble seguro: borrar todo solo es posible en la demostracion
+            # publica, que vive en un archivo SQLite con datos ficticios. Una
+            # instalacion real (MySQL, DEMO_MODE=False) nunca llega aqui.
+            if not settings.DEMO_MODE or connection.vendor != 'sqlite':
+                raise CommandError(
+                    '--reiniciar solo esta permitido en modo demostracion (DEMO_MODE=True y DB_ENGINE=sqlite).'
+                )
+            call_command('flush', interactive=False, verbosity=0)
+
         if Colaborador.objects.exists():
             raise CommandError(
                 'La base de datos ya tiene colaboradores. Este comando solo corre sobre una base vacia, '
@@ -115,11 +138,7 @@ class Command(BaseCommand):
     def _usuarios(self):
         self.usuarios = {
             rol: Usuario.objects.create_user(email, nombre, CLAVE_DEMO, rol=rol)
-            for rol, email, nombre in [
-                ('ADMIN', 'admin@demo.co', 'Administrador Demo'),
-                ('TALENTO_HUMANO', 'talento@demo.co', 'Laura Demo'),
-                ('NOMINA', 'nomina@demo.co', 'Nómina Demo'),
-            ]
+            for rol, email, nombre in USUARIOS_DEMO
         }
         self.th = self.usuarios['TALENTO_HUMANO']
 

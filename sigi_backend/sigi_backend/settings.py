@@ -54,8 +54,20 @@ INSTALLED_APPS = [
     'dotacion',
 ]
 
+# Modo demostracion publica con datos ficticios (ver sigi_backend/demo.py).
+DEMO_MODE = config('DEMO_MODE', default=False, cast=bool)
+
+# Carpeta con el frontend ya compilado (npm run build). Si se define, Django
+# sirve tambien la aplicacion web: un solo proceso y una sola direccion. Asi
+# funciona la imagen de Docker. En desarrollo se deja vacia y el frontend
+# corre aparte con npm start.
+FRONTEND_DIR = config('FRONTEND_DIR', default='')
+
 MIDDLEWARE = [
+    'sigi_backend.demo.SaludMiddleware',
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'sigi_backend.demo.BloqueosDemoMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -87,19 +99,32 @@ WSGI_APPLICATION = 'sigi_backend.wsgi.application'
 
 
 # Base de datos MySQL
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.mysql',
-        'NAME': config('DB_NAME', default='sigi_db'),
-        'USER': config('DB_USER', default='root'),
-        'PASSWORD': config('DB_PASSWORD', default=''),
-        'HOST': config('DB_HOST', default='localhost'),
-        'PORT': config('DB_PORT', default='3306'),
-        'OPTIONS': {
-            'charset': 'utf8mb4',
-        },
+# Base de datos. MySQL es la de trabajo. DB_ENGINE=sqlite usa un archivo local
+# sin instalar nada: lo usa la demostracion publica (los datos son ficticios y
+# se recargan en cada arranque) y sirve para probar el sistema rapidamente.
+DB_ENGINE = config('DB_ENGINE', default='mysql')
+
+if DB_ENGINE == 'sqlite':
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': config('DB_NAME', default=str(BASE_DIR / 'demo.sqlite3')),
+        }
     }
-}
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': config('DB_NAME', default='sigi_db'),
+            'USER': config('DB_USER', default='root'),
+            'PASSWORD': config('DB_PASSWORD', default=''),
+            'HOST': config('DB_HOST', default='localhost'),
+            'PORT': config('DB_PORT', default='3306'),
+            'OPTIONS': {
+                'charset': 'utf8mb4',
+            },
+        }
+    }
 
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -117,7 +142,14 @@ TIME_ZONE = 'America/Bogota'
 USE_I18N = True
 USE_TZ = True
 
-STATIC_URL = 'static/'
+# Los archivos propios de Django (panel /admin/) van en /django-static/ para
+# no chocar con /static/, que es donde el frontend compilado deja su JS y CSS.
+STATIC_URL = 'django-static/'
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+if FRONTEND_DIR:
+    WHITENOISE_ROOT = FRONTEND_DIR       # sirve el frontend desde la raiz del sitio
+    WHITENOISE_INDEX_FILE = True         # "/" entrega index.html
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
 

@@ -1,0 +1,16 @@
+.git
+**/node_modules
+**/build
+**/__pycache__
+**/*.pyc
+**/.env
+**/.env.*
+!**/.env.example
+sigi_backend/media
+sigi_backend/staticfiles
+sigi_backend/venv
+sigi_backend/.venv
+sigi_backend/*.sqlite3
+docs
+*.docx
+*.md

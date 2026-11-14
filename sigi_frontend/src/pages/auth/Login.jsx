@@ -6,11 +6,13 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import pokeLogo from '../../assets/poke-logo.png';
+import { useDemo } from '../../utils/demo';
 import './Login.css';
 
 export default function Login() {
     const { login } = useAuth();
     const navigate  = useNavigate();
+    const demo      = useDemo();
 
     const [form, setForm]       = useState({ email: '', password: '' });
     const [error, setError]     = useState('');
@@ -45,7 +47,7 @@ export default function Login() {
         <div className="login-container">
             <div className="login-card">
                 <div className="login-header">
-                    <img src={pokeLogo} alt="Poke" className="login-logo-img" />
+                    {!demo.demo && <img src={pokeLogo} alt="Poke" className="login-logo-img" />}
                     <h1 className="login-titulo">AUSENTRACK</h1>
                     <p className="login-subtitulo">Gestión de Talento Humano</p>
                 </div>
@@ -91,6 +93,24 @@ export default function Login() {
                         {cargando ? 'Ingresando...' : 'Ingresar'}
                     </button>
                 </form>
+
+                {demo.demo && (
+                    <div className="login-demo">
+                        <strong>Demostración con datos ficticios</strong>
+                        <p>Elige un usuario para entrar. Los datos se reinician solos cada cierto tiempo.</p>
+                        {demo.usuarios.map(u => (
+                            <button
+                                key={u.email}
+                                type="button"
+                                className="login-demo-usuario"
+                                onClick={() => { setForm({ email: u.email, password: demo.clave }); setError(''); }}
+                            >
+                                <span>{u.rol === 'ADMIN' ? 'Administrador' : u.rol === 'TALENTO_HUMANO' ? 'Talento Humano' : 'Nómina'}</span>
+                                <small>{u.email}</small>
+                            </button>
+                        ))}
+                    </div>
+                )}
 
                 <p className="login-footer">
                     Universidad Politecnico Grancolombiano — 2026
