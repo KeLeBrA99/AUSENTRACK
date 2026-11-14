@@ -1,0 +1,55 @@
+# AUSENTRACK con MySQL, para uso real o para probarlo completo en tu equipo.
+#
+#   docker compose up --build
+#   docker compose exec app python manage.py createsuperuser
+#
+# Abre http://localhost:8000
+#
+# Antes de usarlo fuera de tu equipo, crea un archivo .env junto a este con
+# valores propios (SECRET_KEY, DB_PASSWORD, ALLOWED_HOSTS) y revisa
+# GUIA_DESPLIEGUE.md.
+
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_DATABASE: ausentrack
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD:-cambia-esta-clave}
+    command: --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    volumes:
+      - datos_mysql:/var/lib/mysql
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 5s
+      timeout: 5s
+      retries: 30
+    restart: unless-stopped
+
+  app:
+    build: .
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+    environment:
+      DEBUG: "False"
+      SECRET_KEY: ${SECRET_KEY:-solo-para-pruebas-en-tu-equipo-cambiala-antes-de-publicar}
+      ALLOWED_HOSTS: ${ALLOWED_HOSTS:-localhost,127.0.0.1}
+      # En tu equipo no hay HTTPS; al publicar detras de un proxy con
+      # certificado, pon SECURE_SSL_REDIRECT=True.
+      SECURE_SSL_REDIRECT: ${SECURE_SSL_REDIRECT:-False}
+      DB_NAME: ausentrack
+      DB_USER: root
+      DB_PASSWORD: ${DB_PASSWORD:-cambia-esta-clave}
+      DB_HOST: db
+      DB_PORT: "3306"
+      VACACIONES_SABADO_HABIL: ${VACACIONES_SABADO_HABIL:-True}
+    volumes:
+      # Documentos de incapacidades: fuera del contenedor para no perderlos
+      - documentos:/app/media
+    restart: unless-stopped
+
+volumes:
+  datos_mysql:
+  documentos:

@@ -301,3 +301,12 @@
     transition: color 0.2s;
 }
 .sidebar-perfil-link:hover { color: white; }
+
+/* Aviso del modo demostracion */
+.demo-aviso {
+    background: #fff8e1;
+    border-bottom: 1px solid #f0d98c;
+    color: #6b5200;
+    font-size: 13px;
+    padding: 8px 24px;
+}

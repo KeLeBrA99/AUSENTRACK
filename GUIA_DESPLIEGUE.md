@@ -83,6 +83,13 @@ mysqldump -u usuario -p sigi_db > respaldo_$(date +%F).sql
 
 ## 4. Archivos estáticos y multimedia
 
+**Opción con Docker.** El `Dockerfile` del repositorio arma una sola imagen
+que sirve la aplicación web y la API, y `docker-compose.yml` la levanta junto
+con MySQL, con volúmenes para la base y para los documentos. En ese caso el
+frontend ya va compilado dentro de la imagen (pasos 2 y `collectstatic`
+resueltos) y solo hay que definir las variables del paso 1 en un archivo
+`.env` junto a `docker-compose.yml`.
+
 Los documentos de incapacidades (`media/`) deben quedar en un volumen
 persistente, no dentro del contenedor o carpeta de la aplicación — si no, se
 pierden en cada despliegue.

@@ -198,6 +198,49 @@ importando la plantilla de Excel que el propio módulo genera).
 
 ---
 
+## Con Docker
+
+Una sola imagen sirve el backend y el frontend en `http://localhost:8000`.
+
+**Demostración con datos ficticios** (un contenedor, sin instalar MySQL):
+
+```bash
+docker compose -f docker-compose.demo.yml up --build
+```
+
+La pantalla de inicio muestra los usuarios de prueba.
+
+**Sistema completo con MySQL** (los datos y los documentos quedan en volúmenes):
+
+```bash
+docker compose up --build
+docker compose exec app python manage.py createsuperuser
+```
+
+Antes de publicarlo fuera de tu equipo, crea un archivo `.env` junto a `docker-compose.yml` con `SECRET_KEY`, `DB_PASSWORD` y `ALLOWED_HOSTS` propios y revisa [`GUIA_DESPLIEGUE.md`](GUIA_DESPLIEGUE.md).
+
+---
+
+## Demo en línea
+
+El repositorio incluye `render.yaml` para publicar la demostración en [Render](https://render.com) con el plan gratuito:
+
+1. Crea una cuenta en Render e inicia sesión con GitHub.
+2. **New → Blueprint**, elige este repositorio y confirma.
+3. Al terminar el primer despliegue, Render entrega la dirección pública.
+
+Qué esperar del modo demostración (`DEMO_MODE=True`):
+
+- Datos ficticios en un archivo SQLite; se recargan en cada arranque y cada 6 horas.
+- La pantalla de inicio ofrece un usuario de prueba por rol.
+- Están desactivados la administración de usuarios, el cambio de contraseñas, la subida e importación de archivos y el panel `/admin/`.
+- No se muestra el logo de la empresa.
+- En el plan gratuito el servicio se duerme tras un rato sin visitas; la primera visita después tarda cerca de un minuto en responder.
+
+Este modo es solo para mostrar el sistema. Para el uso real, ver la guía de despliegue.
+
+---
+
 ## Datos de demostración
 
 Para ver el sistema con contenido sin usar información real:
@@ -237,8 +280,8 @@ Cubren lo más delicado del sistema: quién puede ver qué según su rol, que lo
 documentos de incapacidades solo se entreguen con sesión iniciada, el conteo
 de días y el límite de 540 en las prórrogas, el responsable de pago, la alerta
 de 180 días acumulados, la administración de usuarios, los festivos y días
-hábiles, las reglas de aprobación de vacaciones, los filtros de auditoría y
-el comando de datos de demostración. Django crea y borra
+hábiles, las reglas de aprobación de vacaciones, los filtros de auditoría,
+el comando de datos de demostración y los bloqueos del modo demostración. Django crea y borra
 una base de datos temporal (`test_sigi_db`); la base real no se toca.
 
 ---

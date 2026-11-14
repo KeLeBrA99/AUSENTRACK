@@ -1,0 +1,35 @@
+# Despliegue de la DEMOSTRACION publica en Render (plan gratuito).
+# En render.com: New > Blueprint > elegir este repositorio.
+#
+# Es un solo servicio que sirve la aplicacion web y la API, con datos
+# ficticios en SQLite que se recargan en cada arranque. No usa base de datos
+# externa ni guarda nada real. No sirve para el uso real del sistema: para eso
+# ver GUIA_DESPLIEGUE.md.
+
+services:
+  - type: web
+    name: ausentrack-demo
+    runtime: docker
+    plan: free
+    branch: master
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /healthz
+    autoDeploy: true
+    envVars:
+      - key: DEMO_MODE
+        value: "True"
+      - key: DB_ENGINE
+        value: sqlite
+      - key: DB_NAME
+        value: /data/demo.sqlite3
+      - key: DEBUG
+        value: "False"
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ALLOWED_HOSTS
+        value: .onrender.com
+      - key: PORT
+        value: "10000"
+      - key: WEB_CONCURRENCY
+        value: "1"
